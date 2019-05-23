@@ -1,12 +1,13 @@
 ---
-title: markdown基础语法
+title: markdown基础语法介绍
 copyright: true
 date: 2019-05-23 09:30:49
 tags: markdown
 categories: 基础知识
 ---
-学习一下markdown的基础语法,一种自动排版码字工具,多用就好了
+Markdown是一种轻量级标记语言,它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。总之就是很方便了,下面就来看一些markdown的基础语法
 <!-- more -->
+
 ## Markdown基础语法
 1. [介绍](#0)
 2. [标题](#1)
@@ -45,4 +46,4 @@ Markdown 是一种轻量级标记语言，让写作者专注于写作而不用�
 注：id不能存在相同的
 ```
 
-
+参考文章:https://github.com/younghz/Markdown

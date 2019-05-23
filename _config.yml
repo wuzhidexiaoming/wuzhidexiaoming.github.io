@@ -86,6 +86,9 @@ deploy:
     repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
     branch: master
 # 新增配置
+# 音乐
+aplayer:
+  meting: true
 # 大约多少分钟读完
 symbols_count_time:
   #文章内是否显示
