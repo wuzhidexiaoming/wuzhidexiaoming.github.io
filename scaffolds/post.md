@@ -2,6 +2,6 @@
 title: {{ title }}
 date: {{ date }}
 tags:
-categories:
+categories: 默认
 copyright: true
 ---

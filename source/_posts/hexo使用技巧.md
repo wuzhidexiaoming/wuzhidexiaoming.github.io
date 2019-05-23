@@ -3,7 +3,7 @@ title: hexo的一些使用技巧
 copyright: true
 date: 2019-05-23 18:07:48
 tags: hexo
-categories:
+categories: 默认
 ---
 
 谈不上技巧,就是帮助文档上的一些东西等,记录一下,以便以后学习
