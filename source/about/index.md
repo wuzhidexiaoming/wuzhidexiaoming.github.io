@@ -8,7 +8,7 @@ date: 2019-05-22 13:32:44
 半天的时间的成果
 
 - 自豪的采用了next主题和
-- 使用codingpage服务并绑定了www.xhxm.xyz域名
+- 使用codingpage服务并绑定了`www.xhxm.xyz`
 - 添加了分类/标签页
 - 文章阅读统计(用的leancloud)
 - 评论系统(也是leancloud,这个好像会'严重'拖慢加载速度)

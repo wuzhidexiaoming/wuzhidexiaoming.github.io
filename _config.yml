@@ -86,12 +86,12 @@ deploy:
   - type: git
     repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
     branch: master
-
-  - type: upyun
-    serviceName: hexo-m
-    operatorName: xiaoming
-    operatorPassword: +.youpaiyun+.999
-    path:
+  # 每次更新都要重新大量提交,决定采取手动上传的方法
+  # - type: upyun
+  #   serviceName: hexo-m
+  #   operatorName: xiaoming
+  #   operatorPassword: +.youpaiyun+.999
+  #   path:
 # 新增配置
 # 音乐
 aplayer:
