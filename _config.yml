@@ -78,9 +78,10 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  - type: git
-    repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
-    branch: master
+  #  不知道为什么每次`hexo d`都会自动添加之前自定义域名的信息
+  # - type: git
+  #   repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
+  #   branch: master
 
   - type: git
     repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
