@@ -3,7 +3,9 @@ title: markdown基础语法介绍
 copyright: true
 date: 2019-05-23 09:30:49
 tags: markdown
-categories: 基础知识
+categories: 
+- 前端
+- 基础知识
 ---
 Markdown是一种轻量级标记语言,它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。总之就是很方便了,下面就来看一些markdown的基础语法
 <!-- more -->
