@@ -87,11 +87,11 @@ deploy:
     repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
     branch: master
   # 每次更新都要重新大量提交,在只有个别文件更新的情况下决定采取手动上传的方法.好像手动不行,略微尴尬,暂时用这种慢慢的方法
-  - type: upyun
-    serviceName: hexo-m
-    operatorName: xiaoming
-    operatorPassword: +.youpaiyun+.999
-    path:
+  # - type: upyun
+  #   serviceName: hexo-m
+  #   operatorName: xiaoming
+  #   operatorPassword: +.youpaiyun+.999
+  #   path:
 # 新增配置
 # 音乐
 aplayer:
