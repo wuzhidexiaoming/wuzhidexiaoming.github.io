@@ -1,6 +1,6 @@
 ---
 title: hexo备份
-categories: 默认
+categories: hexo
 copyright: true
 date: 2019-08-05 15:11:09
 tags: hexo
