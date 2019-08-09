@@ -22,8 +22,8 @@ tags: hexo
 1. 从coding下载备份用的分支
 2. 打开备份目录,`sudo npm install hexo-cli`,`sudo npm install`,`npm install hexo-deployer-git`依次执行上述三条命令
 3. 由于我备份了主题,这里需要下载需要的文件,从主题配置文件中查看需要哪些文件
-   - [Fancybox](*https://github.com/theme-next/theme-next-fancybox3*)
-   - [pace](*https://github.com/theme-next/theme-next-pace*)
+   - [Fancybox](https://github.com/theme-next/theme-next-fancybox3)
+   - [pace](https://github.com/theme-next/theme-next-pace)
    - [lazyload](https://github.com/theme-next/theme-next-jquery-lazyload)
    - 具体需要下载什么看主题配置文件,可以通过`hexo s --debug`,通过浏览器开发者工具查看哪里出错了
 
