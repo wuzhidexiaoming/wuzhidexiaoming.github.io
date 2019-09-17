@@ -23,7 +23,6 @@ categories: hexo
 ```
 
 <p class="blockquote-center">html方式</p>
-
 直接在 markdown 文件中编写 html 代码,加上上面的属性即可
 
 #### 标签方式
@@ -103,3 +102,8 @@ categories:
 ```
 
 暂时就写这么多,发现新的了或想起来了再写.
+
+#### 利用又拍云增量同步管理静态网站
+
+1. 下载upx工具
+2. 语法`upx sync "本地目录" `
