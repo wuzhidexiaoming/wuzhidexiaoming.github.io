@@ -23,10 +23,12 @@ tags: HTML/CSS
 3. 第三种空元素,不是很懂
 4. 如果所有参与折叠的外边距都为负，折叠后的外边距的值为最小的负边距的值。这一规则适用于相邻元素和嵌套元素。
 5. **示例**
+
 <iframe height="300" style="width: 100%;" scrolling="no" title="外边距折叠" src="//codepen.io/wuzhidexiaoming/embed/NWKLdQP/?height=300&theme-id=37768&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
     See the Pen <a href='https://codepen.io/wuzhidexiaoming/pen/NWKLdQP/'>外边距折叠</a> by wuzhidexiaoming
     (<a href='https://codepen.io/wuzhidexiaoming'>@wuzhidexiaoming</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
+
 
 
 ### 行内元素的边距
