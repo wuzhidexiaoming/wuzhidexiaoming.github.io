@@ -8,7 +8,7 @@ date: 2019-09-20 20:00:04
 tags: HTML/CSS
 ---
 
-{% note info%} CSS常用的选择器、浮动、标准盒模型 {% endnote %}
+{% note info%} CSS常用的选择器、浮动{% endnote %}
 
 <!-- more -->
 
