@@ -12,7 +12,7 @@ tags: HTML/CSS
 
 <!-- more -->
 
-### CSS选择器
+### [CSS选择器](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Selectors)
 
 #### 基本选择器
 
@@ -20,6 +20,12 @@ tags: HTML/CSS
 2. class，类选择器。`.classname{width:100px;}`，所有类名为"classname"的元素，宽度设置为100px.(一个元素可以有很多类名，每个类名用空格隔开`class="oneClassName twoClassName"`)
 3. id选择器，**一个页面中每个id都是唯一的**，`#idName{width:100px}`，所有id名为"idName"的元素，宽度设置为100px
 4. 通配符选择器，`*{padding:0}`,就是页面中所有元素都被选中
+5. **属性选择器**
+   1. `div[attr]` 所有带有`attr`属性的元素
+   2. `div[attr="word"]` 所有带有`atrr`属性并且其值为`attr="word`的元素
+   3. `div[attr*="w"]` 所有带有`attr`属性并且其值包含`w`的元素
+   4. `div[attr^="w"]` 所有带有`attr`属性并且其值以`w`开头的的元素
+   5. `div[attr$="d"]`所有带有`attr`属性并且其值以`d`结尾的的元素
 
 #### 组合选择器
 
@@ -80,4 +86,10 @@ tags: HTML/CSS
 	- 下面的元素不会上移，但是同样导致宽度丢失（原因同上）
 4. **将元素的overflow设置为一个非visible值**。*推荐使用hidden*
 5. IE6,设置元素属性zoom:1;(zoom实现放大的效果)
+
+### 颜色
+
+1. rgb
+2. rgba.**可以设置颜色值的透明度，相较opacity，它们不具有继承性，即不会影响子元素的透明度。**
+3. hsla
 
