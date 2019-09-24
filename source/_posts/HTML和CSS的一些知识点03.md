@@ -79,11 +79,9 @@ tags: HTML/CSS
 
 #### 如何开启BFC
 
-1. 设置元素浮动
-	- 可以撑开父元素，会导致父元素宽度丢失（宽度被子元素撑开，不是父元素的全部）
-2. 设置元素绝对定位
-3. 设置元素为inline-block
-	- 下面的元素不会上移，但是同样导致宽度丢失（原因同上）
+1. position属性值为absolute,fixed
+2. float属性值不为none
+3. display属性值为inline-block,flex,inline-flex,table-cell,table-caption
 4. **将元素的overflow设置为一个非visible值**。*推荐使用hidden*
 5. IE6,设置元素属性zoom:1;(zoom实现放大的效果)
 

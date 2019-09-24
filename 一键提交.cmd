@@ -1,0 +1,1 @@
+hexo d -g && hexo b && git push
