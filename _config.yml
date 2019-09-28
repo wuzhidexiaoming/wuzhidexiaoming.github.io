@@ -111,4 +111,3 @@ backup:
   theme: next,landscape
   repository:
     gitcafe: git@git.dev.tencent.com:xiaomingda/xiaomingda.git,hexoBac
-    github: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git,hexoBac
