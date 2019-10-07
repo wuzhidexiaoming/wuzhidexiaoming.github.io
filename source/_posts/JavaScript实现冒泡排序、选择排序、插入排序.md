@@ -1,6 +1,8 @@
 ---
 title: JavaScript实现冒泡排序、选择排序
-categories: 前端
+categories: 
+- 前端
+- JS
 copyright: true
 date: 2019-09-28 17:27:02
 tags: JS
