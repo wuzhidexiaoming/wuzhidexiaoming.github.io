@@ -1,6 +1,8 @@
 ---
 title: 关于
 date: 2019-05-22 13:32:44
+type: "about"
+comments: false
 ---
 
 **关于个人**
@@ -36,6 +38,6 @@ date: 2019-05-22 13:32:44
 
 ​	写在最后但非常重要,欢迎朋友们的到来!!!.
 
-![欢迎欢淫](https://cdn.llow22.com/picture/welcome.gif)
+![欢迎欢迎](https://cdn.llow22.com/picture/welcome.gif)
 
 还有,因为有动画,所以在第一次加载网页的时候会很慢
