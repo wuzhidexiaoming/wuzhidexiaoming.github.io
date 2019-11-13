@@ -20,11 +20,13 @@ tags: hexo
 ### 恢复过程
 
 1. 从coding下载备份用的分支
-2. 打开备份目录,`sudo npm install hexo-cli`,`sudo npm install`,`npm install hexo-deployer-git`依次执行上述三条命令
+2. 打开备份目录,首先全局安装`sudo npm install -g hexo-cli`,然后克隆备份文件,在文件夹中执行`sudo npm install`
 3. 由于我备份了主题,这里需要下载需要的文件,从主题配置文件中查看需要哪些文件
    - [Fancybox](https://github.com/theme-next/theme-next-fancybox3)
    - [pace](https://github.com/theme-next/theme-next-pace)
    - [lazyload](https://github.com/theme-next/theme-next-jquery-lazyload)
+   - 克隆的文件需要注意名称,不要带什么前缀,例:`pace`
+   - [fontawesome](https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css)用cnd,在主题配置文件中搜索关键字就行
    - 具体需要下载什么看主题配置文件,可以通过`hexo s --debug`,通过浏览器开发者工具查看哪里出错了
 
 至此,恢复就完成了，可能有一些细节没有处理好，暂时没有发现问题
