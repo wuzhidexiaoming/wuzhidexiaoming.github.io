@@ -1,10 +1,13 @@
 ---
 title: hexo备份
-categories: hexo
+tags:
+  - hexo
+categories: 默认
 copyright: true
+toc: false
 date: 2019-08-05 15:11:09
-tags: hexo
 ---
+
 
 {% note info %} hexo备份恢复,做简单记录 {% endnote %}
 
@@ -29,5 +32,7 @@ tags: hexo
    - [fontawesome](https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css)用cnd,在主题配置文件中搜索关键字就行
    - 具体需要下载什么看主题配置文件,可以通过`hexo s --debug`,通过浏览器开发者工具查看哪里出错了
 
-至此,恢复就完成了，可能有一些细节没有处理好，暂时没有发现问题
+4. [`upx`](https://github.com/upyun/upx)又拍云增量同步工具,linxu平台下`/usr/local/bin/upx`,然后`chmod +x /usr/local/bin/upx`
+5. `ssh-keygen -t rsa ` ssh密匙
 
+至此,恢复就完成了，可能有一些细节没有处理好，暂时没有发现问题
