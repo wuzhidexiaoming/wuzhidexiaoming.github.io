@@ -2,7 +2,7 @@
 title: hexo备份
 tags:
   - hexo
-categories: 默认
+categories: hexo
 copyright: true
 toc: false
 date: 2019-08-05 15:11:09

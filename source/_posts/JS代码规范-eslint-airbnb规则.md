@@ -2,13 +2,12 @@
 title: JS代码规范-eslint+airbnb规则
 tags:
   - JS
+  - 工具
 categories: 默认
 copyright: true
 toc: false
-originContent: ''
 date: 2019-11-14 13:56:10
 ---
-
 
 
 {% note info %} 简单配置eslint+aiebnb代码规范 {% endnote %}
@@ -23,7 +22,8 @@ date: 2019-11-14 13:56:10
 5. `npm install --save-dev eslint-config-airbnb eslint@^#.#.# eslint-plugin-jsx-a11y@^#.#.# eslint-plugin-import@^#.#.# eslint-plugin-react@^#.#.# eslint-plugin-react-hooks@^#.#.#`
 6. `npm insatll --save-dev babel-eslint` 解析
 7. `npm install --save-dev eslint-plugin-html` html文件可用
-8. 该安装的都安装完了
+8. `npm install --save-dev eslint-plugin-prettier`和`npm install --save-dev --save-exact prettier`和`npm install --save-dev eslint-config-prettier` [参考链接](https://github.com/prettier/eslint-plugin-prettier)
+. 该安装的都安装完了
 
 ## 配置文件
 
