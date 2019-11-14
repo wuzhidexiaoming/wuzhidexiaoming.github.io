@@ -18,12 +18,12 @@ date: 2019-11-14 13:56:10
 1. `npm init -f` 初始化
 2. `npm install eslint`
 3. `eslint --init` 看着选择,这个时候用的是`eslint-config-airbnb-base`
-4. `npm info "eslint-config-airbnb@latest" peerDependencies` 查看`eslint-config-airbnb`安装需要的依赖版本
+4. `npm info "eslint-config-airbnb@latest" peerDependencies` 查看`eslint-config-airbnb`安装需要的依赖版本.[参考链接](https://www.npmjs.com/package/eslint-config-airbnb)
 5. `npm install --save-dev eslint-config-airbnb eslint@^#.#.# eslint-plugin-jsx-a11y@^#.#.# eslint-plugin-import@^#.#.# eslint-plugin-react@^#.#.# eslint-plugin-react-hooks@^#.#.#`
 6. `npm insatll --save-dev babel-eslint` 解析
 7. `npm install --save-dev eslint-plugin-html` html文件可用
 8. `npm install --save-dev eslint-plugin-prettier`和`npm install --save-dev --save-exact prettier`和`npm install --save-dev eslint-config-prettier` [参考链接](https://github.com/prettier/eslint-plugin-prettier)
-. 该安装的都安装完了
+9. 该安装的都安装完了
 
 ## 配置文件
 
