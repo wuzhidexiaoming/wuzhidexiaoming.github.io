@@ -2,10 +2,13 @@
 title: 浅述ajax
 tags:
   - JS
-categories:
-  - 前端
+categories: 默认
+copyright: true
 toc: false
+date: 2019-11-13 14:40:52
 ---
+
+
 
 
 {% note info %} 对ajax的理解,以及ajax如何应用 {% endnote %}
