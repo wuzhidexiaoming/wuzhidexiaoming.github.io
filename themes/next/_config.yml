@@ -65,7 +65,7 @@ footer:
 
   powered:
     # Hexo link (Powered by Hexo).
-    enable: false
+    enable: true
     # Version info of Hexo after Hexo link (vX.X.X).
     version: true
 
@@ -78,8 +78,8 @@ footer:
   # Beian icp information for Chinese users. In China, every legal website should have a beian icp in website footer.
   # http://www.beian.miit.gov.cn
   beian:
-    enable: false
-    icp:
+    enable: true
+    icp: 豫ICP备19013186号-3
 
   # Any custom text can be defined here.
   #custom_text: Hosted by <a href="https://pages.coding.me" class="theme-link" rel="noopener" target="_blank">Coding Pages</a>
@@ -92,8 +92,9 @@ footer:
 # Valid values of language: deed.zh, deed.fr, deed.de, etc.
 creative_commons:
   license: by-nc-sa
+  # 个人信息中显示版权什么的
   sidebar: false
-  post: false
+  post: true
   language: zh-CN
 
 # `Follow me on GitHub` banner in the top-right corner.
@@ -115,7 +116,7 @@ disable_baidu_transformation: false
 canonical: true
 
 # Change headers hierarchy on site-subtitle (will be main site description) and on all post / page titles for better SEO-optimization.
-seo: false
+seo: true
 
 # If true, will add site-subtitle to index page, added in main hexo config.
 # subtitle: Subtitle
@@ -141,7 +142,7 @@ exturl: false
 #baidu_site_verification:
 
 # Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO.
-baidu_push: false
+baidu_push: true
 
 # ---------------------------------------------------------------
 # Menu Settings
@@ -166,6 +167,7 @@ menu:
 # Enable / Disable menu icons / item badges.
 menu_settings:
   icons: true
+# 在菜单右边显示对应的数量
   badges: false
 
 # ---------------------------------------------------------------
@@ -225,11 +227,11 @@ avatar:
   # You can also use other linking images.
   url: https://cdn.llow22.com/picture/361467501532.jpg
   # If true, the avatar would be dispalyed in circle.
-  rounded: false
+  rounded: true
   # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.
   opacity: 1
   # If true, the avatar would be rotated with the cursor.
-  rotated: false
+  rotated: true
 
 # Table Of Contents in the Sidebar
 toc:
@@ -269,7 +271,7 @@ sidebar:
 
 back2top:
   enable: true
-  # Back to top in sidebar.
+  # Back to top in sidebar.因为调大了返回顶部的按钮,导致按钮在sidebar显示的时候会显示(错误)
   sidebar: false
   # Scroll percent label in b2t button.
   scrollpercent: true
@@ -295,7 +297,7 @@ text_align:
   mobile: justify
 
 # Automatically scroll page to section which is under <!-- more --> mark.
-scroll_to_more: true
+scroll_to_more: false
 
 # Automatically saving scroll position on each post / page in cookies.
 save_scroll: false
@@ -377,6 +379,7 @@ related_posts:
 # Post edit
 # Dependencies: https://github.com/hexojs/hexo-deployer-git
 post_edit:
+  # 因为用的又拍云对象存储,实现起来的话好像行不通,需要git平台远程仓库
   enable: false
   url: https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name # Link for view source.
   #url: https://github.com/user-name/repo-name/edit/branch-name/subdirectory-name # Link for fork & edit.
@@ -529,8 +532,7 @@ pangu: false
 # Dependencies: https://github.com/theme-next/theme-next-quicklink
 # Visit https://github.com/GoogleChromeLabs/quicklink for details
 quicklink:
-  enable: false
-
+  enable: true
   # Quicklink (quicklink.umd.js script) is loaded on demand
   # Add `quicklink: true` in Front-matter of the page or post you need
   # Home page and archive page can be controlled through home and archive options below
@@ -1122,7 +1124,7 @@ vendors:
   # Example:
   # pangu: //cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js
   # pangu: //cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js
-  pangu:
+  pangu: https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js
 
   # Internal version: 1.0.0
   # See: https://github.com/GoogleChromeLabs/quicklink
