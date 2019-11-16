@@ -107,7 +107,8 @@ symbols_count_time:
 
 # 备份
 backup:
-  type: git
-  theme: next,landscape
-  repository:
-    gitcafe: git@git.dev.tencent.com:xiaomingda/xiaomingda.git,hexoBac
+    type: git
+    theme: next,landscape
+    repository:
+       github: git@github.com:xxx/xxx.git,branchName
+       gitcafe: git@git.dev.tencent.com:xiaomingda/xiaomingda.git,hexoBac
