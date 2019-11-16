@@ -1,9 +1,9 @@
 ---
-title: es6基础语法
+title: ES6基础语法
 tags:
   - JS
   - ES6
-categories: 前端
+categories: 默认
 copyright: true
 toc: false
 date: 2019-11-14 10:31:12
@@ -32,7 +32,7 @@ date: 2019-11-14 10:31:12
 
 - ES5中只有全局作用域和函数作用域
 - ES6增加了一个块级作用域,`{}` 就是一个块
-- 变量跟着语法块的变n,下面的列子用var声明的话,就是全局作用域,整个代码只有一个i变量,settimeout异步执行,所以最后var打印的会是同一个值(闭包也可以实现)
+- 变量跟着语法块的变,下面的示例用 `var` 声明的话,就是全局作用域,整个代码只有一个i变量,settimeout异步执行,所以最后var打印的会是同一个值(闭包也可以实现)
 
 ```javascript
   for (let a = 0;a<5;a++){
