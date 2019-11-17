@@ -1188,8 +1188,8 @@ vendors:
   # Example:
   # disqusjs_js: //cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js
   # disqusjs_css: //cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js
-  disqusjs_js: cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js
-  disqusjs_css: cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js
+  disqusjs_js: https://cdn.llow22.com/disqus.js
+  disqusjs_css: https://cdn.llow22.com/disqus.js
 
 # Assets
 css: css
