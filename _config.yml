@@ -82,7 +82,7 @@ deploy:
   # - type: git
   #   repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
   #   branch: master
-
+  - type:baidu_url_submitter
   - type: git
     repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
     branch: master
@@ -105,4 +105,9 @@ symbols_count_time:
   total_symbols: false
   total_time: false
 
-# 备份
+# 百度推送
+baidu_url_submit:
+  count: 100 # 提交最新的一个链接
+  host: https://xhxm.xyz
+  token: ff8Ox8kUYf77BaIG
+  path: baidu_urls.txt
