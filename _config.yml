@@ -82,6 +82,9 @@ deploy:
   - type: git
     repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
     branch: master
+  - type: git
+    repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
+    branch: master
 # 音乐
 aplayer:
   meting: true
