@@ -1,11 +1,12 @@
 ---
 title: HTML和CSS的一些知识点03
-categories: 
-- 前端
-- 基础知识
+categories:
+  - 前端
+  - 基础知识
 copyright: true
-date: 2019-09-20 20:00:04
 tags: HTML/CSS
+abbrlink: f8a9
+date: 2019-09-20 20:00:04
 ---
 
 {% note info%} CSS常用的选择器、浮动{% endnote %}

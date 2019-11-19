@@ -5,6 +5,7 @@ tags:
 categories: hexo
 copyright: true
 toc: false
+abbrlink: 6c31
 date: 2019-08-05 15:11:09
 ---
 

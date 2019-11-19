@@ -1,11 +1,12 @@
 ---
 title: HTML/CSS的一些知识点
-categories: 
-- 前端
-- 基础知识
+categories:
+  - 前端
+  - 基础知识
 copyright: true
-date: 2019-05-24 12:05:47
 tags: HTML/CSS
+abbrlink: d479
+date: 2019-05-24 12:05:47
 ---
 
 {% note info%} 一些关于 HTML 的基础知识点 {% endnote %}

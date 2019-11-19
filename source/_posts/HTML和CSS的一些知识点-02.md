@@ -1,11 +1,12 @@
 ---
 title: HTML/CSS的一些知识点-02
-categories: 
-- 前端
-- 基础知识
+categories:
+  - 前端
+  - 基础知识
 copyright: true
-date: 2019-09-17 12:02
+date: '2019-09-17 12:02'
 tags: HTML/CSS
+abbrlink: 58b
 ---
 
 {% note info%} 一些关于 HTML 的基础知识点系列02,主要是边距问题, {% endnote %}
