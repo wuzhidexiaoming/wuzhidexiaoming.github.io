@@ -594,8 +594,8 @@ calendar:
 
 # Disqus
 disqus:
-  enable: true
-  shortname: xmxh-xyz
+  enable: false
+  shortname: xhxm-xyz-1
   count: true
   lazyload: true
 
@@ -603,7 +603,7 @@ disqus:
 # Alternative Disqus - Render comment component using Disqus API
 # Demo: https://suka.js.org/DisqusJS/
 disqusjs:
-  enable: true
+  enable: false
   # API Endpoint of Disqus API (https://disqus.com/api/)
   # leave api empty if you are able to connect to Disqus API
   # otherwise you need a reverse proxy for Disqus API
@@ -611,7 +611,7 @@ disqusjs:
   # api: https://disqus.skk.moe/disqus/
   api: https://disqus.com/api/
   apikey: lt47BYfh3q85aQFjZIEGegSeI99i6JsJyH25NS1bqsmEa2G3BMZ74H4jYT1U59FG
-  shortname: xmxh-xyz
+  shortname: xhxm-xyz-1
 
 # Changyan
 changyan:
@@ -659,12 +659,12 @@ gitment:
 # Gitalk
 # Demo: https://gitalk.github.io
 gitalk:
-  enable: false
-  github_id: # Github repo owner
-  repo: # Repository name to store issues
-  client_id: # Github Application Client ID
-  client_secret: # Github Application Client Secret
-  admin_user: # GitHub repo owner and collaborators, only these guys can initialize github issues
+  enable: true
+  github_id: wuzhidexiaoming
+  repo: wuzhidexiaoming.github.io
+  client_id: ce1822c790d04cde3498
+  client_secret: 76712d4933b996090de4292bb846419028f300ed
+  admin_user: wuzhidexiaoming
   distraction_free_mode: true # Facebook-like distraction free mode
   # Gitalk's display language depends on user's browser or system environment
   # If you want everyone visiting your site to see a uniform language, you can set a force language value
