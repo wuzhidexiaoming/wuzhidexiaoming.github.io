@@ -103,3 +103,10 @@ baidu_url_submit:
   host: https://xhxm.xyz
   token: ff8Ox8kUYf77BaIG
   path: baidu_urls.txt
+
+# hexo-admin authentification
+admin:
+  username: xiaoming
+  password_hash: $2a$10$dOaAews9rvXCt.6DFx9gROztzvXH.GPGjeiT/.QuF5XEbe8x5tDuS
+  secret: wangxiaoming
+  deployCommand: 'hexoAdmin.bat'
