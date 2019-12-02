@@ -7,7 +7,7 @@ abbrlink: 49f7
 date: 2019-11-19 19:07:07
 tags: 
   - Vue 
-  - Js
+  - JS
 ---
 
 {% note info %}vue初体验,一些指令介绍{% endnote %}
