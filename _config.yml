@@ -80,13 +80,13 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  - type: baidu_url_submitter
-  - type: git
-    repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
-    branch: master
-  - type: git
-    repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
-    branch: master
+- type: git
+  repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
+  branch: master
+- type: heroku
+  repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
+  branch: master
+- type: baidu_url_submitter
 # 音乐
 aplayer:
   meting: true
