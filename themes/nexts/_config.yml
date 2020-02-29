@@ -167,7 +167,7 @@ menu:
 # Enable / Disable menu icons / item badges.
 menu_settings:
   icons: true
-# 在菜单右边显示对应的数量
+  # 在菜单右边显示对应的数量
   badges: false
 
 # ---------------------------------------------------------------
@@ -217,7 +217,7 @@ links_title: 友情链接
 # links_layout: block
 links_layout: inline
 links:
-  4Km: https://work.llow22.com/
+  4Km: https://wuzhidexiaoming.gitee.io/doc
   #Title: http://example.com
 
 # Sidebar Avatar
@@ -634,7 +634,7 @@ changyan:
 #   pageSize: 10 # pagination size
 #   language: # language, available values: en, zh-cn
 #   visitor: false # leancloud-counter-security is not supported for now. When visitor is set to be true, appid and appkey are recommended to be the same as leancloud_visitors' for counter compatibility. Article reading statistic https://valine.js.org/visitor.html
-  # comment_count: true # if false, comment count will only be displayed in post page, not in home page
+# comment_count: true # if false, comment count will only be displayed in post page, not in home page
 
 # LiveRe comments system
 # You can get your uid from https://livere.com/insight/myCode (General web site)
