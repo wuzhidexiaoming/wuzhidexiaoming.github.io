@@ -83,7 +83,7 @@ deploy:
 - type: git
   repo: git@git.dev.tencent.com:xiaomingda/xiaomingda.git
   branch: master
-- type: heroku
+- type: git
   repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
   branch: master
 - type: baidu_url_submitter
