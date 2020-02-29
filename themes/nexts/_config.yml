@@ -94,7 +94,7 @@ creative_commons:
   license: by-nc-sa
   # 个人信息中显示版权什么的
   sidebar: false
-  post: true
+  post: false
   language: zh-CN
 
 # `Follow me on GitHub` banner in the top-right corner.
