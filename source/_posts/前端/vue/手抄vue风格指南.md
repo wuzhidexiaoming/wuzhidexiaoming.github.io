@@ -3,9 +3,10 @@ title: 手抄vue风格指南
 categories: 前端
 copyright: true
 author: 小名
-date: 2020-03-01 11:58:49
 tags:
   - Vue
+abbrlink: df5a
+date: 2020-03-01 11:58:49
 ---
 
 {% note info %}Vue的一些规范{% endnote %}
