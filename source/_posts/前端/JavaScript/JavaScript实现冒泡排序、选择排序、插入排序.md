@@ -2,7 +2,7 @@
 title: JavaScript实现冒泡排序、选择排序
 categories:
   - 前端
-  - JS
+  - JavaScript
 copyright: true
 tags: JS
 abbrlink: 15b4

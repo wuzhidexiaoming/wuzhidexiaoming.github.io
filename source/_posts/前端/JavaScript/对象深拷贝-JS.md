@@ -2,7 +2,7 @@
 title: 对象深拷贝(JS)
 categories:
   - 前端
-  - JS
+  - JavaScript
 copyright: true
 author: 小名
 abbrlink: be33
