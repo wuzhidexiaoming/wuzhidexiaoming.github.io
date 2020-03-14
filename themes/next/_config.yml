@@ -572,25 +572,26 @@ comments:
   style: tabs
   # Choose a comment system to be displayed by default.
   # Available values: changyan | disqus | disqusjs | gitalk | livere | valine
-  active:
+  active: disqus
   # Setting `true` means remembering the comment system selected by the visitor.
   storage: true
   # Lazyload all comment systems.
   lazyload: true
   # Modify texts or order for any navs, here are some examples.
   nav:
-    # disqus:
-    #  text: Load Disqus
-    #  order: -1
-    gitalk:
-      order: -1
+    disqus:
+     text: Load Disqus
+     order: -1
+    # gitalk:
+    #   order: -1
 
 # Disqus
 disqus:
   enable: true
   shortname: xhxm-xyz-1
-  count: true
-  #post_meta_order: 0
+  # 开启计数 错误 显示错误 目前不知哪配置错了
+  count: false
+  post_meta_order: 0
 
 # DisqusJS
 # Alternative Disqus - Render comment component using Disqus API.
