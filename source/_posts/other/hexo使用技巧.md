@@ -108,3 +108,7 @@ categories:
 
 1. 下载upx工具
 2. 语法`upx sync "本地目录" `
+
+### 预览草稿
+
+- `hexo s --draft`
