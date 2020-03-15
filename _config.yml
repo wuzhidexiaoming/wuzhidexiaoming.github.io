@@ -124,7 +124,7 @@ abbrlink:
 
 # 搜索功能 npm install hexo-algoliasearch --save
 # https://github.com/oncletom/hexo-algolia
-algolia:
-  applicationID: 'OQIXJ47MVH'
-  apiKey: '66d67c067230235900b9714e1f95bbd3'
-  indexName: xiaoming
+# algolia:
+#   applicationID: 'OQIXJ47MVH'
+#   apiKey: '66d67c067230235900b9714e1f95bbd3'
+#   indexName: xiaoming
