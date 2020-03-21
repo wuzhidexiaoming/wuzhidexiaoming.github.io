@@ -1,7 +1,7 @@
 ---
 title: JS中Array实例常用方法
-categories: 默认
-copyright: 前端
+categories: 前端
+copyright: true
 author: 小名
 tags:
   - JS
