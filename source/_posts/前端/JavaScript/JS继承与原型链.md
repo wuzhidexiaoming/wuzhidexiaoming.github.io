@@ -111,6 +111,7 @@ let person1 = new Person("小名", 88);
       }
 
       // 先继承家族身份
+      // 有个疑问:这样的话,Xiaoming的原型对象上还会有XiaoFamily创建出来的实例中的属性.
       Xiaoming.prototype = new XiaoFamily();
       Xiaoming.prototype.constructor = Xiaoming;
 
