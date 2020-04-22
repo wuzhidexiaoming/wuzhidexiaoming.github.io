@@ -9,7 +9,7 @@ abbrlink: 54f6
 date: 2020-03-24 20:44:06
 ---
 
-{% note info %}笔记看一点记一点{% endnote %}
+{% note info %}vue生命周期-笔记（可能会有错误理解）{% endnote %}
 
 <!-- more -->
 
@@ -20,5 +20,6 @@ date: 2020-03-24 20:44:06
 - `initState(vm)`是在 `callHook(vm, 'beforeCreate')`之后 `callHook(vm, 'created')`之前，所以在 `beforeCreate`生命周期函数中，无法使用 `props`、 `methods`、`data`、`computed`、`watch`
   ![vue初始化实例源码](https://cdn.llow22.com/picture/Snipaste_2020-03-24_20-42-42.png)
 
+- new Vue()实列
 
 ---

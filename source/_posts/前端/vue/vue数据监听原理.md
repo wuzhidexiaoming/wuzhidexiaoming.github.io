@@ -63,7 +63,7 @@ date: 2020-03-27 11:49:37
     const arrProto = Object.create(oldArrProto);
     let methods = ['push','shift']; // 此处拿这两个方法举例
     methods.forEach(methodName=>{
-      methodName=function(){
+      arrProto[methodName]=function(){
         updateView();
         oldArrProto[methodName].call(this,...arguments);
       }
