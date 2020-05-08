@@ -83,9 +83,6 @@ deploy:
 - type: git
   repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
   branch: master
-- type: git
-  repo: git@e.coding.net:xiaomingda/xiaomingda.git
-  branch: master
 - type: baidu_url_submitter
 # 音乐
 aplayer:
