@@ -78,13 +78,12 @@ module.exports = {
 #### nginx
 
 - 待补充
+- 解决开发机的跨域问题
 
 ### CORS
 
 - 待补充。最好是后端做CORS。
-- koa ``
-
-
+- koa `ctx.response.set({'Access-Control-Allow-Origin':'*'})`
 
 ---
 
