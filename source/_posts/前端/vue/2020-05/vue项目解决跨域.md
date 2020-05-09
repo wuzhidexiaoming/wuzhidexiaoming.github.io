@@ -44,7 +44,7 @@ tags:
 
 ## 如何解决`ajax`产生的跨域问题
 
-- jsonp、**CROS**、**代理**
+- jsonp、**CORS**、**代理**
 
 ### 通过代理解决跨域
 
@@ -82,6 +82,7 @@ module.exports = {
 ### CORS
 
 - 待补充。最好是后端做CORS。
+- koa ``
 
 
 

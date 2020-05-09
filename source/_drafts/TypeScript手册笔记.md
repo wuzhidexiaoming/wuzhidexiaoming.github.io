@@ -1,3 +1,6 @@
+---
+abbrlink: '2301'
+---
 # TypeScript手册笔记
 
 ## 陌生术语
