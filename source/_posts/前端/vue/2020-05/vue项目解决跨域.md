@@ -1,11 +1,12 @@
 ---
 title: vue项目解决跨域
-categories: 默认
+categories: 前端
 copyright: true
 author: 小名
 abbrlink: f97
 date: 2020-05-08 10:03:31
 tags:
+  - Vue
 ---
 
 {% note info %}为什么会产生跨域问题？常见解决方法？最好的解决方法？{% endnote %}
