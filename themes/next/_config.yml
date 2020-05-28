@@ -205,7 +205,7 @@ links_settings:
   layout: inline
 
 links:
-  4km: https://wuzhidexiaoming.gitee.io/doc/#/
+  # 4km: https://wuzhidexiaoming.gitee.io/doc/#/
 
 # Table of Contents in the Sidebar
 # Front-matter variable (unsupport wrap expand_all).
