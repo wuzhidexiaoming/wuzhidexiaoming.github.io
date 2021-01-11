@@ -1,6 +1,6 @@
 ---
 title: ubuntu安装最新版nginx
-categories: 默认
+categories: Linux
 copyright: true
 author: 小名
 tags:
