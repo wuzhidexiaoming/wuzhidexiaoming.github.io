@@ -1,6 +1,8 @@
 ---
 title: vue数据监听原理
-categories: 前端
+categories:
+  - 前端
+  - Vue
 copyright: true
 author: 小名
 tags:
@@ -9,12 +11,14 @@ abbrlink: 560e
 date: 2020-03-27 11:49:37
 ---
 
-{% note info %}vue中是如何对数据进行监听的--笔记{% endnote %}
+{% note info %}vue 中是如何对数据进行监听的--笔记{% endnote %}
 
 <!-- more -->
 
-# Vue数据监听（对象、数组）
+# Vue 数据监听（对象、数组）
+
 ## 这是对象的监听方式
+
 ```javascript
     /**
      * updateView() 更新
@@ -52,7 +56,8 @@ date: 2020-03-27 11:49:37
 
 ## 这是数组的监听方式
 
-- Vue对数组的处理没有采用给键添加getter/setter的形式实现响应式。文档中说的是因为性能问题没有这样做。
+- Vue 对数组的处理没有采用给键添加 getter/setter 的形式实现响应式。文档中说的是因为性能问题没有这样做。
+
 ```javascript
     /**
      * arrProto 新数组原型
@@ -60,7 +65,7 @@ date: 2020-03-27 11:49:37
      * defineReactive() 核心功能
      * observer() 入口
      * /
-    
+
     const oldArrProto = Array.prototype;
     const arrProto = Object.create(oldArrProto);
     let methods = ['push','shift']; // 此处拿这两个方法举例
@@ -103,8 +108,10 @@ date: 2020-03-27 11:49:37
       }
     }
 ```
-## 小结
-- 以上就是vue中对数组和对象的监听，特点就是，**一次性递归到底（计算量略大）**,后来添加的新属性，无法添加到响应式中。（可以用vm.$set，实现方式还不知道。）
-- 可以实现需要使用数据时，再将对应数据添加到响应式系统。学会了再记。
----
 
+## 小结
+
+- 以上就是 vue 中对数组和对象的监听，特点就是，**一次性递归到底（计算量略大）**,后来添加的新属性，无法添加到响应式中。（可以用 vm.$set，实现方式还不知道。）
+- 可以实现需要使用数据时，再将对应数据添加到响应式系统。学会了再记。
+
+---

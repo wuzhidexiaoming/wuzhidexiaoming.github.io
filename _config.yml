@@ -81,10 +81,10 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-- type: git
-  repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
-  branch: master
-- type: baidu_url_submitter
+  - type: git
+    repo: git@github.com:wuzhidexiaoming/wuzhidexiaoming.github.io.git
+    branch: master
+  - type: baidu_url_submitter
 # 音乐
 aplayer:
   meting: true
@@ -109,14 +109,13 @@ admin:
   username: xiaoming
   password_hash: $2a$10$dOaAews9rvXCt.6DFx9gROztzvXH.GPGjeiT/.QuF5XEbe8x5tDuS
   secret: wangxiaoming
-  deployCommand: 'hexoAdmin.bat'
-
+  deployCommand: "hexoAdmin.bat"
 
 # 链接转换hexo-abbrlink
 # abbrlink config
 abbrlink:
   alg: crc16 #support crc16(default) and crc32
-  rep: hex    #support dec(default) and hex
+  rep: hex #support dec(default) and hex
 
 # 更改 permalink 值
 

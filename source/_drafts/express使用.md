@@ -1,38 +1,42 @@
 ---
+title: express使用
+categories:
+  - 前端
+copyright: true
+author: 小名
 abbrlink: e337
+date: 2020-03-10 13:08:35
+tags:
+  - express
 ---
-# express框架
 
-
+# express 框架
 
 ## 创建服务器
 
 ```javascript
-const express = require("express")
-    
-const server = express()
-let port = 8081
-server.listen(port,()=>{
-    console.log('HTTP服务已启动',`http://localhost:${port}/`)
-})
+const express = require("express");
 
-server.get('/test',function(req,res,next){
-    res.send('test successful')
-})
+const server = express();
+let port = 8081;
+server.listen(port, () => {
+  console.log("HTTP服务已启动", `http://localhost:${port}/`);
+});
+
+server.get("/test", function (req, res, next) {
+  res.send("test successful");
+});
 // 访问 http://localhost:8081/test/ 返回"test successful"
 
 // 自带中间件 放在最后，这样没有找的接口就当是访问文件
-server.use(express.static("./static/"));  // 寻找当前文件层级下的 static文件夹中的文件
+server.use(express.static("./static/")); // 寻找当前文件层级下的 static文件夹中的文件
 ```
-
-
-
 
 ## 中间件
 
 ### body-parse
 
-- bodyParser.urlencoded    解析 application/x-www-form-urlencoded	默认的提交方式
+- bodyParser.urlencoded 解析 application/x-www-form-urlencoded 默认的提交方式
 
 - bodyParser.json
 
@@ -41,40 +45,39 @@ server.use(express.static("./static/"));  // 寻找当前文件层级下的 stat
 - 代码演示
 
   ```javascript
-  const express = require('express')
-  const body = require('body-parser')
-  
-  const parseJson = body.json()
-  const parseUrlencoded = body.urlencoded()
-  const server = express()
-  
-  // server.use(parseJson,parseUrlencoded);
-  server.post('/test',parseJson,function(req,res,next){
-      console.log(req.body); // {"xx":"xx"}; json数据
-      res.send('test successful')
-  })
-  ```
+  const express = require("express");
+  const body = require("body-parser");
 
-  
+  const parseJson = body.json();
+  const parseUrlencoded = body.urlencoded();
+  const server = express();
+
+  // server.use(parseJson,parseUrlencoded);
+  server.post("/test", parseJson, function (req, res, next) {
+    console.log(req.body); // {"xx":"xx"}; json数据
+    res.send("test successful");
+  });
+  ```
 
 ### multer
 
-- body-parse不能处理 multipart/form-data格式的请求数据，所以来用multer新的中间件，但是multer又不能处理其他的，两个互补。
+- body-parse 不能处理 multipart/form-data 格式的请求数据，所以来用 multer 新的中间件，但是 multer 又不能处理其他的，两个互补。
 
 - 代码演示
+
   ```javascript
   const express = require('express')
     const multer = require("multer")
-    
+
     const server = express()
     let port = 8182
     const upload = multer({dest:'./static'});	// 上传文件存放路径
-    
+
     srever.use(upload.any()); // 表示任何字段文件类型和普通类型都能通过req.body或req.files获得请求数据
-  
+
   // req.body
     [Object: null prototype] { testsss: 'sss' }]
-  
+
     // req.files
     [
       {
@@ -89,30 +92,27 @@ server.use(express.static("./static/"));  // 寻找当前文件层级下的 stat
       }
     ]
   ```
-  
 
 ### cookie-parser
 
 ### cookie-session
 
-
-
 ## 疑问
 
-- TODO:post什么情况下会把参数附加到url上？
-- module.exports={}和expoert.xxx=xxx。学习node的模块化方式
-  - 只用Moudle.exports就对了，防止出错。可以等于任何东西
-  - exports.xxx只能这种形式。
-- 未解决：`req.on('data',buffer=>{})` 为什么好像只能监视multipart/form-data 格式类型的请求？
-- *如何拦截所有一类请求。`server.get('/',(req,res,next)=>{})`这样的话行不通！！！*
+- TODO:post 什么情况下会把参数附加到 url 上？
+- module.exports={}和 expoert.xxx=xxx。学习 node 的模块化方式
+  - 只用 Moudle.exports 就对了，防止出错。可以等于任何东西
+  - exports.xxx 只能这种形式。
+- 未解决：`req.on('data',buffer=>{})` 为什么好像只能监视 multipart/form-data 格式类型的请求？
+- _如何拦截所有一类请求。`server.get('/',(req,res,next)=>{})`这样的话行不通！！！_
   - `server.get('*',(req,res,next)=>{})`
-- 我在postman上测试，post请求也可以写params参数(附加在url上的)，get请求也可以在body中设置各种参数，那么他俩的本质上有什么区别？
+- 我在 postman 上测试，post 请求也可以写 params 参数(附加在 url 上的)，get 请求也可以在 body 中设置各种参数，那么他俩的本质上有什么区别？
   - 传输上好像没啥区别，就是协议规定，规定就是这样的。按规矩来，大家都好办事。
-  - 未解决：*待确认答案*
+  - 未解决：_待确认答案_
 
 ## 待整理
 
-- cookie和session
+- cookie 和 session
 
   ```
   /*
@@ -141,10 +141,8 @@ server.use(express.static("./static/"));  // 寻找当前文件层级下的 stat
    * */
   ```
 
-
-
-- get的数据请求数据是`&`链接的
+- get 的数据请求数据是`&`链接的
 - post
-  - 如果是x-www-form-urlencoded格式的话也是`&`链接的，只不过是放进了body中，
-  - 如果是multipart/form-data的话，用`content-type`中的boundary分隔符切割数据。每个完整的数据由`Content-Disposition: form-data; name="sdfasd";\r\n\r\nvalue`组成，文件的话特殊一点在`Content-Disposition`后一行多一个`Content-Type: text/plain`，然后才是数据。
-  - 如果是json的话，也是放在了body中，在头部信息隔一个空行之后`{"test":"nihao"}`
+  - 如果是 x-www-form-urlencoded 格式的话也是`&`链接的，只不过是放进了 body 中，
+  - 如果是 multipart/form-data 的话，用`content-type`中的 boundary 分隔符切割数据。每个完整的数据由`Content-Disposition: form-data; name="sdfasd";\r\n\r\nvalue`组成，文件的话特殊一点在`Content-Disposition`后一行多一个`Content-Type: text/plain`，然后才是数据。
+  - 如果是 json 的话，也是放在了 body 中，在头部信息隔一个空行之后`{"test":"nihao"}`
