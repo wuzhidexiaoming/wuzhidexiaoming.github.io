@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://www.xhxm.xyz
+url: https://wuzhidexiaoming.github.io/
 root: /
 # 修改链接后,在文章顶部不显示评论统计,暂无需求,暂未解决!
 permalink: :year/:month/:day/:abbrlink/
@@ -100,7 +100,7 @@ symbols_count_time:
 # 百度推送
 baidu_url_submit:
   count: 100 # 提交最新的一个链接
-  host: https://xhxm.xyz
+  host: https://wuzhidexiaoming.github.io/
   token: ff8Ox8kUYf77BaIG
   path: baidu_urls.txt
 
