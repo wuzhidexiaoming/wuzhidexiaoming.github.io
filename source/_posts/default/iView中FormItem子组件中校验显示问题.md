@@ -58,7 +58,8 @@ export default{
 
 ## 为何会出现
 
-  	`iView`组件库中,`FormItem`校验失败的话会给其添加一个名叫`ivu-form-item-error`的类名,而关键在于在`input.less` 文件中有这个一个样式
+`iView`组件库中,`FormItem`校验失败的话会给其添加一个名叫`ivu-form-item-error`的类名,而关键在于在`input.less` 文件中有这个一个样式
+
 
 ```css
 .ivu-form-item-error .ivu-input{
