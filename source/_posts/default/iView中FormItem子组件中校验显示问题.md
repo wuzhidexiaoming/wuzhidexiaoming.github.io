@@ -83,6 +83,21 @@ export default{
 
 ​	还有一种方法，感觉也可以，就是父组件不做校验，通过`$refs`调用子组件中的表单校验方法，那么哪些表单变红就会正常了，但是总的父组件的校验是没有做的，不过影响也不大。
 
+## 其他
+
+  想这样因为样式的问题，在表单中还有另一处。就是 label 前面的那个必填 * 本不该是出现的时候依旧出现了，就是因为祖先元素加了指定类名，使出问题的元素命中指定CSS指定选择器
+
+  ```css
+    .ivu-form-item-required .ivu-form-item-label:before{
+      content: '*';
+      display: inline-block;
+      margin-right: 4px;
+      line-height: 1;
+      font-family: SimSun;
+      font-size: 12px;
+      color: #ed4014;
+    }
+  ```
 ## 参考
 
 - [`iView`源码](git@e.coding.net:xiaomingda/temp/liview.git)
