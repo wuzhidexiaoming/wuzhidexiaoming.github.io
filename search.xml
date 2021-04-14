@@ -1,0 +1,1736 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>aria2使用</title>
+    <url>/2021/02/15/bce/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>linux下 aria2c + ariaNg面板 使用</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="aria2c-AriaNg-使用"><a href="#aria2c-AriaNg-使用" class="headerlink" title="aria2c+AriaNg 使用"></a>aria2c+AriaNg 使用</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><code>sudo pacman -S aria2</code> 安装 <code>aria2</code>程序</li>
+<li>下载 AriaNg 面板 <a href="https://github.com/mayswind/AriaNg">下载地址</a><ul>
+<li>在 web服务器中部署，我用的 nginx</li>
+</ul>
+</li>
+</ul>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><ul>
+<li><p>创建 <code>.aria2.conf</code>配置文件， <code>mkdir ~/.aria2 &amp;&amp; cd ~/.aria2 &amp;&amp; vim aria2.conf</code></p>
+  <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 文件的保存路径(可使用绝对路径或相对路径), 默认: 当前启动位置</span></span><br><span class="line"><span class="string">dir=/home/ming/downloads</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用磁盘缓存, 0为禁用缓存, 需1.16以上版本, 默认:16M</span></span><br><span class="line"><span class="comment">#disk-cache=32M</span></span><br><span class="line"><span class="comment">#disk-cache=32M</span></span><br><span class="line"><span class="comment"># 文件预分配方式, 能有效降低磁盘碎片, 默认:prealloc</span></span><br><span class="line"><span class="comment"># 预分配所需时间: none &lt; falloc ? trunc &lt; prealloc</span></span><br><span class="line"><span class="comment"># falloc和trunc则需要文件系统和内核支持</span></span><br><span class="line"><span class="comment"># NTFS建议使用falloc, EXT3/4建议trunc, MAC 下需要注释此项</span></span><br><span class="line"><span class="string">file-allocation=prealloc</span></span><br><span class="line"><span class="comment"># 断点续传</span></span><br><span class="line"><span class="string">continue=true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 下载连接相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最大同时下载任务数, 运行时可修改, 默认:5</span></span><br><span class="line"><span class="string">max-concurrent-downloads=10</span></span><br><span class="line"><span class="comment"># 同一服务器连接数, 添加时可指定, 默认:1</span></span><br><span class="line"><span class="string">max-connection-per-server=10</span></span><br><span class="line"><span class="comment"># 最小文件分片大小, 添加时可指定, 取值范围1M -1024M, 默认:20M</span></span><br><span class="line"><span class="comment"># 假定size=10M, 文件为20MiB 则使用两个来源下载; 文件为15MiB 则使用一个来源下载</span></span><br><span class="line"><span class="string">min-split-size=10M</span></span><br><span class="line"><span class="comment"># 单个任务最大线程数, 添加时可指定, 默认:5</span></span><br><span class="line"><span class="string">split=5</span></span><br><span class="line"><span class="comment"># 整体下载速度限制, 运行时可修改, 默认:0</span></span><br><span class="line"><span class="comment">#max-overall-download-limit=0</span></span><br><span class="line"><span class="comment"># 单个任务下载速度限制, 默认:0</span></span><br><span class="line"><span class="comment">#max-download-limit=0</span></span><br><span class="line"><span class="comment"># 整体上传速度限制, 运行时可修改, 默认:0</span></span><br><span class="line"><span class="comment">#max-overall-upload-limit=0</span></span><br><span class="line"><span class="comment"># 单个任务上传速度限制, 默认:0</span></span><br><span class="line"><span class="comment">#max-upload-limit=0</span></span><br><span class="line"><span class="comment"># 禁用IPv6, 默认:false</span></span><br><span class="line"><span class="string">disable-ipv6=true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## RPC相关设置 ##</span></span><br><span class="line"><span class="string">enable-rpc=true</span></span><br><span class="line"><span class="string">pause=false</span></span><br><span class="line"><span class="string">rpc-allow-origin-all=true</span></span><br><span class="line"><span class="string">rpc-listen-all=true</span></span><br><span class="line"><span class="string">rpc-save-upload-metadata=true</span></span><br><span class="line"><span class="string">rpc-secure=false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用RPC, 默认:false</span></span><br><span class="line"><span class="comment">#enable-rpc=true</span></span><br><span class="line"><span class="comment"># 允许所有来源, 默认:false</span></span><br><span class="line"><span class="comment">#rpc-allow-origin-all=true</span></span><br><span class="line"><span class="comment"># 允许非外部访问, 默认:false</span></span><br><span class="line"><span class="comment">#rpc-listen-all=true</span></span><br><span class="line"><span class="comment"># 事件轮询方式, 取值:[epoll, kqueue, port, poll, select], 不同系统默认值不同</span></span><br><span class="line"><span class="comment">#event-poll=select</span></span><br><span class="line"><span class="comment"># RPC监听端口, 端口被占用时可以修改, 默认:6800</span></span><br><span class="line"><span class="string">rpc-listen-port=6800</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><ul>
+<li><code>aria2c --conf-path=/home/ming/.aria2/aria2.conf</code>,然后在浏览器中访问 AriaNg 服务即可</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>默认</category>
+      </categories>
+      <tags>
+        <tag>aria</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ubuntu安装最新版nginx</title>
+    <url>/2021/01/04/33a1/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>Ubuntu 安装最新稳定版的 nginx</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="Nginx-Install"><a href="#Nginx-Install" class="headerlink" title="Nginx Install"></a>Nginx Install</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo wget http://nginx.org/keys/nginx_signing.key</span><br><span class="line">sudo apt-key add nginx_signing.key</span><br></pre></td></tr></table></figure>
+
+<h2 id="编辑-etc-apt-sources-list"><a href="#编辑-etc-apt-sources-list" class="headerlink" title="编辑 /etc/apt/sources.list"></a>编辑 <code>/etc/apt/sources.list</code></h2><ul>
+<li>输入 <code>sudo vim /etc/apt/sources.list</code> 编辑<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 文件末尾添加 bionic 参考 http://nginx.org/en/linux_packages.html<span class="comment">#stable</span></span></span><br><span class="line">deb http://nginx.org/packages/ubuntu/ bionic nginx</span><br><span class="line">deb-src http://nginx.org/packages/ubuntu/ bionic nginx</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
+<li>最后输入<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网站http升级https</title>
+    <url>/2021/01/04/a96c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>Nginx 服务,使用的 acme.sh 脚本,letsencrypt 的证书</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><hr>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Nginx</tag>
+        <tag>HTTPS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>善用搜索引擎</title>
+    <url>/2020/08/19/6dd6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>善用搜索引擎</p>
+          </div>
+
+<span id="more"></span>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><ul>
+<li>直接关键词。例：南京、</li>
+<li><code>&quot;南京&quot;</code> 表示网页中必须完全匹配”南京”两个字</li>
+<li><code>site:xhxm.xyz</code> 表示在本网站中搜索内容</li>
+<li><code>南京 -江苏</code> 表示结果中包含南京,但是不包含江苏</li>
+<li><code>intitle:南京</code> 表示标题含有”南京”两个字的结果</li>
+<li><code>allintitle:南京 北京</code> 标题含有南京和北京</li>
+<li><code>12..16</code> 含有 12-16 的数字</li>
+<li><code>|</code> <code>or</code> 或运算</li>
+<li><code>-南京</code> 搜索的结果中不包含”南京”</li>
+<li><code>intext:南京</code> 网页内容必须包含南京,相当于网页中的搜索</li>
+<li><code>filetype:pdf</code> 查询 pdf 文件</li>
+<li><code>inurl:nanjing</code> url 中包含”nanjing”的网址</li>
+<li><code>allinurl</code> 与<code>inurl</code>类似，但仅返回包含 URL 中所有 指定单词的结果。</li>
+<li><code>link:baidu.com</code> 跳转到<code>baidu.com</code> 的内容</li>
+<li><code>imagesize:500x400</code> 搜索 <code>500*400</code> 的图片</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><ul>
+<li><code>intitle:登录 | 后台</code> <a href="https://www.baidu.com/s?wd=intitle:%E7%99%BB%E5%BD%95%20%7C%20%E5%90%8E%E5%8F%B0&rsv_spt=1&rsv_iqid=0xa1829319000daade&issp=1&f=8&rsv_bp=1&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=1&rsv_dl=tb&rsv_sug3=2&rsv_n=2&rsv_sug2=0&rsv_btype=i&inputT=254&rsv_sug4=258">百度</a> <a href="https://www.google.com/search?q=intitle:%E7%99%BB%E5%BD%95+%7C+%E5%90%8E%E5%8F%B0&oq=intitle:%E7%99%BB%E5%BD%95+%7C+%E5%90%8E%E5%8F%B0&aqs=chrome.0.69i59j69i58j69i60.298j0j4&sourceid=chrome&ie=UTF-8">谷歌</a></li>
+<li><code>site:baidu.com intext:在线 | 观看 | 免费 -收费 -订阅 -微信 -腾讯</code> <a href="https://www.baidu.com/s?wd=site:baidu.com%20intext:%E5%9C%A8%E7%BA%BF%20%7C%20%E8%A7%82%E7%9C%8B%20%7C%20%E5%85%8D%E8%B4%B9%20-%E6%94%B6%E8%B4%B9%20-%E8%AE%A2%E9%98%85%20-%E5%BE%AE%E4%BF%A1%20-%E8%85%BE%E8%AE%AF&rsv_spt=1&rsv_iqid=0xf6dfae150006dd84&issp=1&f=8&rsv_bp=1&rsv_idx=2&ie=utf-8&rqlang=cn&tn=baiduhome_pg&rsv_enter=1&rsv_dl=tb&oq=https%253A%252F%252Fwww.google.com%252Fsearch%253Fsafe%253Dstrict%2526sxsrf%253DALeKk01HJXz6%2526gt%253Buy8BmodVVjg%2526lt%253BWsl&rsv_btype=t&inputT=499&rsv_t=a483NX7Hq/YOn9uQY1YKZMEMMZlpeGrHVQOtouJw3ZbfrY+jCGsBTmo6NRFbJhn5sXzJ&rsv_sug3=4&rsv_n=2&rsv_pq=fc0463230007417f&rsv_sug2=0&rsv_sug4=499">百度</a> <a href="https://www.google.com/search?safe=strict&sxsrf=ALeKk01HJXz6Euy8BmodVVjgCWslH6A4TA:1597987050573&ei=6lg_X8y9Itv6-Qav9ISQCw&q=site:baidu.com+intext:%E5%9C%A8%E7%BA%BF+%7C+%E8%A7%82%E7%9C%8B+%7C+%E5%85%8D%E8%B4%B9+-%E6%94%B6%E8%B4%B9+-%E8%AE%A2%E9%98%85+-%E5%BE%AE%E4%BF%A1+-%E8%85%BE%E8%AE%AF&oq=site:baidu.com+intext:%E5%9C%A8%E7%BA%BF+%7C+%E8%A7%82%E7%9C%8B+%7C+%E5%85%8D%E8%B4%B9+-%E6%94%B6%E8%B4%B9+-%E8%AE%A2%E9%98%85+-%E5%BE%AE%E4%BF%A1+-%E8%85%BE%E8%AE%AF&gs_lcp=CgZwc3ktYWIQA1Cw7gFYsO4BYOLvAWgBcAB4AIABaYgBaZIBAzAuMZgBAKABAqABAaoBB2d3cy13aXrAAQE&sclient=psy-ab&ved=0ahUKEwjM2oTUxavrAhVbfd4KHS86AbIQ4dUDCAw&uact=5">谷歌</a></li>
+<li><code>intitle:国家统计局 filetype:xlsx | filetype:pdf | filetype:docx | filetype:txt</code> <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=2&tn=baiduhome_pg&wd=intitle:%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%20filetype:xlsx%20%7C%20filetype:pdf%20%7C%20filetype:docx%20%7C%20filetype:txt&rsv_spt=1&oq=site%253Abaidu.com%2520intext%253A%25E5%259C%25A8%25E7%25BA%25BF%2520%257C%2520%25E8%25A7%2582%25E7%259C%258B%2520%257C%2520%25E5%2585%258D%25E8%25B4%25B9%2520-%25E6%2594%25B6%25E8%25B4%25B9%2520-%25E8%25AE%25A2%25E9%2598%2585%2520-%25E5%25BE%25AE%25E4%25BF%25A1%2520-%25E8%2585%25BE%25E8%25AE%25AF&rsv_pq=d5bf51fe000ddf8d&rsv_t=96a66rMR82q+S/sOjkOtct/AjLLk/hRMAFyG7Gibci+gVoyIU1IrRyLnXo5DJFC6wp2z&rqlang=cn&rsv_enter=1&rsv_dl=tb&rsv_sug3=2&rsv_n=2&rsv_sug2=0&rsv_btype=t&inputT=1600&rsv_sug4=1610">百度</a> <a href="https://www.google.com/search?safe=strict&biw=1920&bih=937&sxsrf=ALeKk009LE9i790QWibnQtbemi6SBQ0OPg:1597986845338&ei=HVg_X-aYFMusoASa-YzYAw&q=intitle:%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80+filetype:xlsx+%7C+filetype:pdf+%7C+filetype:docx+%7C+filetype:txt&oq=intitle:%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80+filetype:xlsx+%7C+filetype:pdf+%7C+filetype:docx+%7C+filetype:txt&gs_lcp=CgZwc3ktYWIQA1DDmhpYw5oaYLycGmgGcAB4AIABAIgBAJIBAJgBAKABAqABAaoBB2d3cy13aXrAAQE&sclient=psy-ab&ved=0ahUKEwimm5byxKvrAhVLFogKHZo8AzsQ4dUDCAw&uact=5">谷歌</a></li>
+<li><code>site:baidu.com -inutl:https</code> 查看一个站点非 https 的结果</li>
+<li>查看死链数量</li>
+<li><code>site:*.gov.cn filetype:pdf | filetype:docx | filetype:xlsx</code> 查看所有政府网站发布的 pdf、docx、xlsx 类型的文件</li>
+<li><code>site:*.gov.cn intitle:号</code> 通常发布文件标题都有”号”这个字</li>
+<li><code>site:*.gov.cn intext:土地 | 2016..2021 intitle:文件</code> <a href="https://www.google.com/search?safe=strict&sxsrf=ALeKk02ocRWw4_voJX4tQRYY1kYsL_Bv4Q:1597989242782&ei=emE_X4KeL9al-Qai04LYAg&q=site:*.gov.cn+intext:%E5%9C%9F%E5%9C%B0+%7C+2016..2021+intitle:%E6%96%87%E4%BB%B6&oq=site:*.gov.cn+intext:%E5%9C%9F%E5%9C%B0+%7C+2016..2021+intitle:%E6%96%87%E4%BB%B6&gs_lcp=CgZwc3ktYWIQA1DPFljPFmD4F2gBcAB4AIABeogBepIBAzAuMZgBAKABAaoBB2d3cy13aXrAAQE&sclient=psy-ab&ved=0ahUKEwiCw67pzavrAhXWUt4KHaKpACsQ4dUDCAw&uact=5">谷歌</a></li>
+<li><code>site:pinterest.com imagesize:10000x5000</code> <a href="https://www.google.com/search?q=site:pinterest.com+imagesize:10000x5000&tbm=isch&ved=2ahUKEwiuycC7y6vrAhXpxosBHR-NCZ8Q2-cCegQIABAA&oq=site:pinterest.com+imagesize:10000x5000&gs_lcp=CgNpbWcQA1DaO1itV2C4WWgAcAB4AIABmgGIAccJkgEDMS45mAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=AV8_X-7ELOmNr7wPn5qm-Ak&bih=937&biw=1920&safe=strict#imgrc=Za0QJRJshbrjXM">谷歌</a></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://ahrefs.com/blog/google-advanced-search-operators">https://ahrefs.com/blog/google-advanced-search-operators</a></li>
+<li><a href="http://www.googleguide.com/advanced_operators_reference.html">http://www.googleguide.com/advanced_operators_reference.html</a></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>百度</tag>
+        <tag>谷歌</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Class类</title>
+    <url>/2021/02/04/336d/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>Class类</p>
+          </div>
+<span id="more"></span>
+<h2 id="类的定义"><a href="#类的定义" class="headerlink" title="类的定义"></a>类的定义</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">&#123;age,name&#125;</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age</span><br><span class="line">        <span class="built_in">this</span>.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// wheel和seeMe定义在了实列身上</span></span><br><span class="line">    wheel = <span class="number">2</span></span><br><span class="line">	<span class="comment">// 如果是这种形式,可以实现 &quot;绑定&quot; this</span></span><br><span class="line">	seeMe = <span class="function">()=&gt;</span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&quot;i&#x27;m&quot;</span> + <span class="string">&quot; &quot;</span> + <span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// sayHello 定义在了 Person.prototype 上</span></span><br><span class="line">	<span class="function"><span class="title">sayHello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        conosle.log(<span class="string">&#x27;Hello&#x27;</span> + <span class="string">&quot; &quot;</span> + <span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="绑定-this"><a href="#绑定-this" class="headerlink" title="绑定 this"></a>绑定 this</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> xiao = <span class="keyword">new</span> Person(&#123;<span class="attr">age</span>:<span class="number">18</span>,<span class="attr">name</span>:<span class="string">&quot;xiaoming&quot;</span>&#125;)</span><br><span class="line">xiao.seeMe();	<span class="comment">// i&#x27;m xiaoming</span></span><br><span class="line"><span class="keyword">let</span> monkey = xiao.seeMe</span><br><span class="line">monkey(); <span class="comment">// i&#x27;m xiaoming</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS使用对象模拟栈结构</title>
+    <url>/2021/02/04/436c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>JS使用对象模拟栈结构</p>
+          </div>
+<span id="more"></span>
+<h1 id="栈数据结构-后进先出（LIFO）"><a href="#栈数据结构-后进先出（LIFO）" class="headerlink" title="栈数据结构 后进先出（LIFO）"></a>栈数据结构 后进先出（LIFO）</h1><blockquote>
+<p>栈是一种遵从后进先出（LIFO）原则的有序集合。新添加或待删除的元素都保存在栈的同<br>一端，称作栈顶，另一端就叫栈底。在栈里，新元素都靠近栈顶，旧元素都接近栈底。</p>
+</blockquote>
+<p>  实现下面这些方法</p>
+<ul>
+<li><code>push</code></li>
+<li><code>pop</code></li>
+<li><code>peek</code></li>
+<li><code>size</code></li>
+<li><code>isEmpty</code></li>
+<li><code>clear</code></li>
+<li><code>toString</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 用对象模拟栈结构</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stack</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.items = &#123;&#125;;</span><br><span class="line">    <span class="built_in">this</span>.count = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">push</span>(<span class="params">element</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.items[<span class="built_in">this</span>.count] = element;</span><br><span class="line">    <span class="built_in">this</span>.count++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">pop</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">delete</span> <span class="built_in">this</span>.items[<span class="built_in">this</span>.count];</span><br><span class="line">    <span class="built_in">this</span>.count--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">size</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.count;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">clear</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.items = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">peek</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.isEmpty()) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">this</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">isEmpty</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.count &lt;= <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">toString</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.isEmpty()) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> objString = <span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.items[<span class="number">0</span>]&#125;</span>`</span>;</span><br><span class="line">    <span class="comment">// 每一次循环都是上一层加一个逗号再加上当前层，直到最后一层 妙啊！</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; <span class="built_in">this</span>.count; i++) &#123;</span><br><span class="line">      objString = <span class="string">`<span class="subst">$&#123;objString&#125;</span>,<span class="subst">$&#123;<span class="built_in">this</span>.items[i]&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> objString;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>React中的函数式组件this指向问题</title>
+    <url>/2021/02/04/136c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>React中的函数式组件this指向问题</p>
+          </div>
+<span id="more"></span>
+<p>  React中组件有函数式组件和类式组件,类式组件中的方法有自己的<code>this</code>,只需做到绑定<code>this</code>就可以避免方法作为事件绑定情景时<code>this</code>丢失的问题了</p>
+<h2 id="函数式组件"><a href="#函数式组件" class="headerlink" title="函数式组件"></a>函数式组件</h2>  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Person.js 定义一个 Person组件</span><br><span class="line">function Person()&#123;</span><br><span class="line">  return (</span><br><span class="line">  	&lt;p&gt;打工人&lt;&#x2F;p&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">export default Person</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>  函数式的组件中,是有没 <code>this</code> 的,<code>props</code>可以通过参数的方式使用,而<code>refs</code>和<code>state</code>则没有(用hooks则可以解决)</p>
+<h2 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h2><h2 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h2>]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>iView中FormItem子组件中校验显示问题</title>
+    <url>/2021/02/04/536c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>iView中FormItem子组件中校验显示问题</p>
+          </div>
+<span id="more"></span>
+<h1 id="iView中FormItem子组件中校验显示问题"><a href="#iView中FormItem子组件中校验显示问题" class="headerlink" title="iView中FormItem子组件中校验显示问题"></a>iView中FormItem子组件中校验显示问题</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>  最近在使用 <code>iView</code> 组件库开发的时候遇到一个问题感觉比较奇怪,就是在<code>FormItem</code>组件中的子组件中包含<code>Form</code>组件,然后,当父组件<code>FormItem</code>校验失败的时候发现其中子组件中所有的<code>Input</code> 都变红了。就比较奇怪,为什么父组件<code>FormItem</code>校验失败了,而其子组件中所有的<code>Input</code> 都变红了?起初以为是不是校验的时候把子组件中的 field 也添加到校验集合里面了,后来看了相关组件源码后发现竟是因为 css 的原因😂</p>
+<p>​    <img data-src="https://er-1253891782.cos.ap-guangzhou.myqcloud.com/picture/clipboard_20210224_042452.png" alt="图片"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 父组件</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">&lt;FormItem prop&#x3D;&quot;lform&quot; label&#x3D;&quot;测试子组件中的表单表现&quot;&gt;</span><br><span class="line">    &lt;div style&#x3D;&quot;border: 1px solid gray&quot;&gt;</span><br><span class="line">        &lt;Lform ref&#x3D;&quot;lformRef&quot; &#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;FormItem&gt;</span><br><span class="line">&#x2F;&#x2F; ...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Lform from &quot;..&#x2F;components&#x2F;Lform&quot;;</span><br><span class="line">export default&#123;</span><br><span class="line">  components:&#123;</span><br><span class="line">    Lform</span><br><span class="line">  &#125;,</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      rules:&#123;</span><br><span class="line">        lForm:[</span><br><span class="line">          &#x2F;&#x2F; 对应的自定义校验代码</span><br><span class="line">          &#123;</span><br><span class="line">          required: true,</span><br><span class="line">          validator: async (rule, value, callback) &#x3D;&gt; &#123;</span><br><span class="line">            &#x2F;&#x2F; 这里直接抛出错误</span><br><span class="line">            callback(new Error(&quot;直接失败&quot;));</span><br><span class="line">          &#125;,</span><br><span class="line">          trigger: &quot;change&quot;,</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="为何会出现"><a href="#为何会出现" class="headerlink" title="为何会出现"></a>为何会出现</h2><p><code>iView</code>组件库中,<code>FormItem</code>校验失败的话会给其添加一个名叫<code>ivu-form-item-error</code>的类名,而关键在于在<code>input.less</code> 文件中有这个一个样式</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.ivu-form-item-error</span> <span class="selector-class">.ivu-input</span>&#123;</span><br><span class="line">   <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ed4014</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  所以问题就来了,如果父组件<code>FormItem</code>上多了一个<code>ivu-form-item-error</code>类名,那么它下面只要符合 上面那个 css 选择器的元素都将变红。类似<code>ivu-input</code>类名的还有好多,都是不同的表单组件</p>
+<p><img data-src="https://er-1253891782.cos.ap-guangzhou.myqcloud.com/picture/clipboard_20210224_050650.png" alt="图片"></p>
+<p>​    </p>
+<p>​    通过上图可以看出，这个<code>InputNumber</code>是不应该变红的，但是因为它所在的<code>FormItem</code>组件校验失败了, 有了<code>ivu-form-item-erro</code>类名,再加上<code>InputNumber</code>本身的类名,完美命中,”报错”的选择器</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>​    问题是找到原因了,但是一时间没想到什么好的办法,或许这么写组件关系本身就不合理。最后我是去掉了<code>FormItem</code>组件校验，做成了通过弹出消息提示表单未完善。</p>
+<p>​    还有一种方法，感觉也可以，就是父组件不做校验，通过<code>$refs</code>调用子组件中的表单校验方法，那么哪些表单变红就会正常了，但是总的父组件的校验是没有做的，不过影响也不大。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>  想这样因为样式的问题，在表单中还有另一处。就是 label 前面的那个必填 * 本不该是出现的时候依旧出现了，就是因为祖先元素加了指定类名，使出问题的元素命中指定CSS指定选择器</p>
+  <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.ivu-form-item-required</span> <span class="selector-class">.ivu-form-item-label</span>:before&#123;</span><br><span class="line">  content: <span class="string">&#x27;*&#x27;</span>;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">margin-right</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">1</span>;</span><br><span class="line">  <span class="attribute">font-family</span>: SimSun;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#ed4014</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="git@e.coding.net:xiaomingda/temp/liview.git"><code>iView</code>源码</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iView中Form表单校验</title>
+    <url>/2021/02/04/339c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>iView中Form表单校验</p>
+          </div>
+<span id="more"></span>
+<h1 id="iView中Form表单校验"><a href="#iView中Form表单校验" class="headerlink" title="iView中Form表单校验"></a>iView中Form表单校验</h1><ul>
+<li><code>Form</code> 的 <code>model</code>和<code>rules</code>属性</li>
+<li><code>FormItem</code>的<code>prop</code>属性</li>
+<li><code>rules</code>中属性名对应 <code>FormItem</code>的<code>prop</code>属性值</li>
+<li><code>Input</code> 绑定的是 必须对应<code>model</code>中对应的属性(属性名与<code>FormItem</code>的<code>prop</code>一致)</li>
+<li>自定义校验情况下,第四条部分非必要</li>
+</ul>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>vue中computed为何作为属性用函数的语法书写</title>
+    <url>/2021/02/04/232c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>vue中computed为何作为属性用函数的语法书写</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="vue中computed属性书写方式的解析"><a href="#vue中computed属性书写方式的解析" class="headerlink" title="vue中computed属性书写方式的解析"></a>vue中computed属性书写方式的解析</h1><blockquote>
+<p><code>vue</code> 中 <code>computed</code>的写法明明是函数的形式,为什么可以通过 <code>.</code> 的形式不加 <code>()</code> 直接调用就可获取到值?</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>webpack的devServer解决跨域问题</title>
+    <url>/2021/02/04/236c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>webpack的devServer解决跨域问题</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="webpack的devServer解决跨域问题"><a href="#webpack的devServer解决跨域问题" class="headerlink" title="webpack的devServer解决跨域问题"></a>webpack的devServer解决跨域问题</h1><p> 代理是指代理当前服务地址发出的请求,如果 axios 配置了 baseURL 且不为本机地址,就不会被代理</p>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初学React-12</title>
+    <url>/2021/02/04/326c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>初学React-12</p>
+          </div>
+<span id="more"></span>
+<h1 id="组件的生命周期以及生命周期与Hooks的关系"><a href="#组件的生命周期以及生命周期与Hooks的关系" class="headerlink" title="组件的生命周期以及生命周期与Hooks的关系?"></a>组件的生命周期以及生命周期与Hooks的关系?</h1><h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><ul>
+<li><code>componentDidMount</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初学React</title>
+    <url>/2021/02/04/356c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>初学React</p>
+          </div>
+<span id="more"></span>
+<h2 id="React基础"><a href="#React基础" class="headerlink" title="React基础"></a>React基础</h2><p>  就简单总结一下 vue 中常用的几种场景,用 react 是如何实现的吧,再加上一些想到的东西如何用 react 去实现</p>
+<ol>
+<li>表单双向绑定</li>
+<li>vue中的自定义 <code>v-model</code>还挺好用的,在 react 中对应的技术怎么实现?</li>
+<li>vue中的<code>provide</code>和<code>inject</code>在 react 中对应的是什么?</li>
+<li>循环组件</li>
+<li>父子组件的通信方式</li>
+<li>路由</li>
+<li>计算属性</li>
+<li>react 中一个较大的表单该如何实现?</li>
+<li>表单默认值?</li>
+<li>函数柯里化</li>
+<li>事件绑定函数中的 <code>this</code>  指向问题,通过<code>xx.bind</code>或<code>xxx = ()=&gt;&#123;&#125;</code> 或者直接通过内联函数的形式</li>
+<li>组件的生命周期以及生命周期与Hooks的关系?</li>
+<li>diff算法</li>
+<li>react 中可以自定义 开发者工具中 component 的name 属性么,使其与文件名不同?</li>
+</ol>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>总结</title>
+    <url>/2020/08/19/6dd6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>总结</p>
+          </div>
+<span id="more"></span>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="new-操作符"><a href="#new-操作符" class="headerlink" title="new 操作符"></a><code>new</code> 操作符</h2><blockquote>
+<p>new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象的实例。</p>
+</blockquote>
+<ol>
+<li><p>在内存中创建一个新对象</p>
+</li>
+<li><p>新对象 <code>[[protorype]]</code> 指向构造函数的 <code>protorype</code>,如果构造函数的 <code>prototype</code>为null,则指向<code>Object.prototype</code></p>
+<p><img data-src="https://er-1253891782.cos.ap-guangzhou.myqcloud.com/picture/clipboard_20210226_041215.png"></p>
+</li>
+<li><p>构造函数内部的 <code>this</code> 被赋值此新对象</p>
+</li>
+<li><p>执行构造函数内的代码进行初始化</p>
+</li>
+<li><p>如果构造函数没返回非空对象则返回创建的新对象</p>
+<iframe src="https://codesandbox.io/embed/awesome-cohen-74l8l?fontsize=14&hidenavigation=1&theme=dark"
+  style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+  title="awesome-cohen-74l8l"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
+</li>
+</ol>
+<h2 id="apply-call-bind"><a href="#apply-call-bind" class="headerlink" title="apply,call,bind"></a><code>apply,call,bind</code></h2><h3 id="apply"><a href="#apply" class="headerlink" title="apply"></a><code>apply</code></h3><h3 id="call"><a href="#call" class="headerlink" title="call"></a><code>call</code></h3><h3 id="bind"><a href="#bind" class="headerlink" title="bind"></a><code>bind</code></h3>]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>记H5跳转小程序</title>
+    <url>/2021/02/04/366c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>记H5跳转小程序</p>
+          </div>
+<span id="more"></span>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>知乎客户端跳转通过插入的广告跳转到小程序</li>
+</ol>
+<h2 id="整个流程需要做的准备"><a href="#整个流程需要做的准备" class="headerlink" title="整个流程需要做的准备"></a>整个流程需要做的准备</h2><ol>
+<li>小程序的 appid</li>
+<li>小程序的原始Id</li>
+<li>云开发id(使用云开发可以免鉴权)</li>
+</ol>
+<h3 id="开发者工具报错"><a href="#开发者工具报错" class="headerlink" title="开发者工具报错"></a>开发者工具报错</h3><p>​    点击开发者工具的云开发,然后准备开启静态服务,之后微信开发者工具便疯狂报错!(目前不知道为什么)</p>
+<p>解决方法:新建了一个云环境选择的按量付费,顺利开通静态网站功能。</p>
+<p>后续：之前报错的云环境，后来能用了，不报错了，可能时微信那边的问题。</p>
+<h3 id="指定跳转路径"><a href="#指定跳转路径" class="headerlink" title="指定跳转路径"></a>指定跳转路径</h3><ul>
+<li>如果是从微信端进入的则配置 <code>wx-open-launch-weapp</code> 标签的 <code>path</code> 属性,可携带参数</li>
+<li>如果是从非微信的移动端进入,则需要配置云函数中的<code>jumpWxa</code>参数中的path属性,同样可携带参数.</li>
+</ul>
+<p><img data-src="https://cdn.llow22.com/2020/01/Snipaste_2021-01-19_09-27-41.png" alt="image-20210119091412927"></p>
+<h2 id="修改项目配置"><a href="#修改项目配置" class="headerlink" title="修改项目配置"></a>修改项目配置</h2><p>​    让开发者工具识别云开发,在<code>project.config.json</code>中添加<code>&quot;cloudfunctionRoot&quot;: &quot;cloudfunctions/&quot;</code>,其中<code>cloudfunctions</code>为对应的文件夹名称</p>
+<h2 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h2><ul>
+<li>开始没仔细看文档,后来发现非微信端进入则是需要配置云函数的参数才可以实现自定义路径</li>
+</ul>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>零碎的知识点</title>
+    <url>/2021/02/04/337c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>零碎的知识点</p>
+          </div>
+<span id="more"></span>
+<ul>
+<li>给 <code>script</code> 标签添加 <code>crossorigin</code> 属性 可以将远程脚本的错误体现到控制台当中</li>
+<li><code>mustache</code> 语法</li>
+</ul>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>敏捷开发git工作流</title>
+    <url>/2021/02/04/336h/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>敏捷开发git工作流</p>
+          </div>
+<span id="more"></span>
+
+
+<h1 id="敏捷开发git工作流"><a href="#敏捷开发git工作流" class="headerlink" title="敏捷开发git工作流"></a>敏捷开发git工作流</h1><p>  现在使用的方法，主分支 master 保持最慢跟新，都是线上的版本。新需求出来之后创建新的功能分支，相关功能分支开发完成后，提测，如果多个功能之间有相互关系，将有关系的分支合并到一个单独的分支中，之后提测。</p>
+<p>场景</p>
+<ul>
+<li>现有功能分支1和功能分支2,然后发现很久很久之前的线上版本出现bug,之后再master之上创建一个分支修复bug,这个commit需要合并到两个功能分支么?</li>
+<li>线上版本 出bug了,找到最近的 版本标签,从其检出新的分支, 个别 commit 用 cherry-pick,然后修复之后 打新的标签,并基于新分支运行流水线<ul>
+<li>cherry-pick 相同的 commit 合并的话 会合并到一个提交么?</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>default</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo的一些使用技巧</title>
+    <url>/2019/05/23/e214/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>谈不上技巧,就是帮助文档上的一些东西等,记录一下,以便以后学习</p>
+          </div>
+
+<span id="more"></span>
+
+<div class="note ">
+            <p>凑排版,不知道为什么会有排版问题(没有这个引用的话,下面的个别标题就会失效显示###),未解决</p>
+          </div>
+
+<h3 id="文本居中的引用"><a href="#文本居中的引用" class="headerlink" title="文本居中的引用"></a>文本居中的引用</h3><p>此标签将生成一个带上下分割线的引用，同时引用内文本将自动居中。 文本居中时，多行文本若长度不等，视觉上会显得不对称，因此建议在引用单行文本的场景下使用。 例如作为文章开篇引用 或者 结束语之前的总结引用。共两种使用方法</p>
+<h4 id="HTML-方式"><a href="#HTML-方式" class="headerlink" title="HTML 方式"></a>HTML 方式</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;blockquote-center&quot;</span>&gt;</span>html方式<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p class="blockquote-center">html方式</p>
+直接在 markdown 文件中编写 html 代码,加上上面的属性即可
+
+<h4 id="标签方式"><a href="#标签方式" class="headerlink" title="标签方式"></a>标签方式</h4><h5 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% centerquote %&#125;标签方式&#123;% endcenterquote %&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>标签方式</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<h5 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% cq %&#125; 标签缩写方式 &#123;% endcq %&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>标签缩写方式 </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<h3 id="Bootstrap-Callout-标注"><a href="#Bootstrap-Callout-标注" class="headerlink" title="Bootstrap Callout(标注)"></a>Bootstrap Callout(标注)</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% note class_name %&#125; Content (md partial supported) &#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>共 6 种样式,替换 class_name 即可</p>
+<ul>
+<li>default</li>
+<li>primary</li>
+<li>success</li>
+<li>info</li>
+<li>warning</li>
+<li>danger</li>
+</ul>
+<div class="note default">
+            <p>默认</p>
+          </div>
+<div class="note primary">
+            <p>主要</p>
+          </div>
+<div class="note success">
+            <p>成功</p>
+          </div>
+<div class="note info">
+            <p>信息</p>
+          </div>
+<div class="note warning">
+            <p>警告</p>
+          </div>
+<div class="note danger">
+            <p>危险</p>
+          </div>
+
+<h3 id="一篇文章多个分类"><a href="#一篇文章多个分类" class="headerlink" title="一篇文章多个分类"></a>一篇文章多个分类</h3><h4 id="子分类"><a href="#子分类" class="headerlink" title="子分类"></a>子分类</h4><p>方式一</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">categories:</span><br><span class="line">  - 父分类</span><br><span class="line">  - 子分类</span><br></pre></td></tr></table></figure>
+
+<p>方式二</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">categories: [父分类,子分类]</span><br></pre></td></tr></table></figure>
+
+<p>两种方式的效果是一样的</p>
+<h4 id="多分类"><a href="#多分类" class="headerlink" title="多分类"></a>多分类</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">categories:</span><br><span class="line">  - [分类一]</span><br><span class="line">  - [分类二]</span><br></pre></td></tr></table></figure>
+
+<p>可以与子分类结合使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">categories:</span><br><span class="line">  - [分类一,分类一的子分类]</span><br><span class="line">  - [分类二]</span><br></pre></td></tr></table></figure>
+
+<p>暂时就写这么多,发现新的了或想起来了再写.</p>
+<h3 id="利用又拍云增量同步管理静态网站"><a href="#利用又拍云增量同步管理静态网站" class="headerlink" title="利用又拍云增量同步管理静态网站"></a>利用又拍云增量同步管理静态网站</h3><ol>
+<li>下载upx工具</li>
+<li>语法<code>upx sync &quot;本地目录&quot; </code></li>
+</ol>
+<h3 id="预览草稿"><a href="#预览草稿" class="headerlink" title="预览草稿"></a>预览草稿</h3><ul>
+<li><code>hexo s --draft</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo文章中插入视频</title>
+    <url>/2019/05/23/27df/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>在文章插入视频,利用插件hexo-tag-dplayer,或者直接用各大平台的分享链接(推荐bilibili无广告)</p>
+<span id="more"></span>
+
+<h3 id="利用插件文章内插入视频"><a href="#利用插件文章内插入视频" class="headerlink" title="利用插件文章内插入视频"></a>利用插件文章内插入视频</h3><p><code>npm install hexo-tag-dplayer --save</code>进行安装</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% dplayer &quot;url&#x3D;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;audio&#x2F;owVideo.mp4&quot; &quot;pic&#x3D;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;audio&#x2F;owVideo.mp4&quot; &quot;loop&#x3D;yes&quot; &quot;theme&#x3D;#FADFA3&quot;&quot;autoplay&#x3D;false&quot; &quot;token&#x3D;tokendemo&quot; %&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="bilibili平台作为参考"><a href="#bilibili平台作为参考" class="headerlink" title="bilibili平台作为参考"></a>bilibili平台作为参考</h3><p>在视屏播放页面有一个分享按钮,选择’嵌入代码’选项复制到你文章中想要播放视频的位置就好了</p>
+<p><img data-src="https://cdn.llow22.com/picture/bilibiliZhanshi.png" alt="演示图"></p>
+<h4 id="播放窗口自适应大小"><a href="#播放窗口自适应大小" class="headerlink" title="播放窗口自适应大小"></a>播放窗口自适应大小</h4><p>我用的是next主题,编辑<code>*\themes\next\source\css\_customd</code>文件,添加下面的代码.</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">// bilibili嵌入视频自适应</span><br><span class="line"><span class="selector-class">.aspect-ratio</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">padding-bottom</span>: <span class="number">75%</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aspect-ratio</span> <span class="selector-tag">iframe</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>代码详情参考<a href="https://www.potatofield.cn/%E3%80%90%E5%89%8D%E7%AB%AF%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8iframe%E5%B5%8C%E5%85%A5%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE%E7%9A%84%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E8%A7%86%E9%A2%91/">bilibli视频嵌入参考文章②</a></p>
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;aspect-ratio&quot;</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=51943273&amp;cid=90934212&amp;page=1&amp;high_quality=1&quot;</span> <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> <span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">sandbox</span>=<span class="string">&quot;allow-top-navigation allow-same-origin allow-forms allow-scripts&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- sandbox=&quot;allow-top-navigation allow-same-origin allow-forms allow-scripts&quot; --&gt;</span>阻止iframe跳转出去</span><br><span class="line"><span class="comment">&lt;!-- `high_quality=1` src中的最后一个参数可以调节嵌入视频的清晰度最高为非会员的最高清晰度。 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 各种参数参考 https://blog.csdn.net/xinshou_caizhu/article/details/94028606 --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>实现下面这样的效果。</p>
+<div class="aspect-ratio">
+ <iframe src="//player.bilibili.com/player.html?aid=51943273&cid=90934212&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" > </iframe>
+</div>
+
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="https://github.com/MoePlayer/hexo-tag-dplayer">插件github项目地址</a><br><a href="https://zhuanlan.zhihu.com/p/24599052">bilibli视频嵌入参考文章</a><br><a href="https://www.potatofield.cn/%E3%80%90%E5%89%8D%E7%AB%AF%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8iframe%E5%B5%8C%E5%85%A5%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE%E7%9A%84%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E8%A7%86%E9%A2%91/">bilibli视频嵌入参考文章②</a><br><a href="https://blog.asucreyau.xyz/2018/11/19/bilibili-embed-optimize/">bilibli视频嵌入参考文章③</a></p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>music</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo备份</title>
+    <url>/2019/08/05/6c31/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>hexo备份恢复,做简单记录 </p>
+          </div>
+
+<span id="more"></span>
+
+<h3 id="主要文件夹及文件"><a href="#主要文件夹及文件" class="headerlink" title="主要文件夹及文件"></a>主要文件夹及文件</h3><ol>
+<li>public,存放生成的静态网页</li>
+<li>source,存放编辑的md文件</li>
+<li>_config.yml文件,配置文件(主题里面也有一个这样的文件)</li>
+<li>scaffolds,存放默认模板</li>
+</ol>
+<h3 id="恢复过程"><a href="#恢复过程" class="headerlink" title="恢复过程"></a>恢复过程</h3><ol>
+<li><p>从coding下载备份用的分支</p>
+</li>
+<li><p>打开备份目录,首先全局安装<code>sudo npm install -g hexo-cli</code>,然后克隆备份文件,在文件夹中执行<code>sudo npm install</code></p>
+</li>
+<li><p>由于我备份了主题,这里需要下载需要的文件,从主题配置文件中查看需要哪些文件</p>
+<ul>
+<li><a href="https://github.com/theme-next/theme-next-fancybox3">Fancybox</a></li>
+<li><a href="https://github.com/theme-next/theme-next-pace">pace</a></li>
+<li><a href="https://github.com/theme-next/theme-next-jquery-lazyload">lazyload</a></li>
+<li>克隆的文件需要注意名称,不要带什么前缀,例:<code>pace</code></li>
+<li><a href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css">fontawesome</a>用cnd,在主题配置文件中搜索关键字就行</li>
+<li>具体需要下载什么看主题配置文件,可以通过<code>hexo s --debug</code>,通过浏览器开发者工具查看哪里出错了</li>
+</ul>
+</li>
+<li><p><a href="https://github.com/upyun/upx"><code>upx</code></a>又拍云增量同步工具,linxu平台下<code>/usr/local/bin/upx</code>,然后<code>chmod +x /usr/local/bin/upx</code></p>
+</li>
+<li><p><code>ssh-keygen -t rsa </code> ssh密匙</p>
+</li>
+</ol>
+<p>至此,恢复就完成了，可能有一些细节没有处理好，暂时没有发现问题</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo文章中插入音乐(1)</title>
+    <url>/2019/05/23/8e70/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>实现效果:在一些需要的文章或页面中插入想要播放的音乐,让网站多一点点乐趣</p>
+<span id="more"></span>
+
+<p>在本地hexo目录中安装插件<code>npm install hexo-tag-aplayer</code> <code>npm install aplayer --save</code></p>
+<h3 id="可以绕过版权的方法"><a href="#可以绕过版权的方法" class="headerlink" title="可以绕过版权的方法"></a>可以绕过版权的方法</h3><h4 id="实例-单首"><a href="#实例-单首" class="headerlink" title="实例(单首)"></a>实例(<strong>单首</strong>)</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% aplayer &quot;Sugarcane&quot; &quot;Ana Olgica&quot; &quot;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;audio&#x2F;Sugarcane_unregistered.mp3&quot;  &quot;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;picture&#x2F;pianoStudy.jpg&quot; %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现的就是这样的效果</p>
+
+        <div id="aplayer-EVhafZvz" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-EVhafZvz"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "Sugarcane",
+              author: "Ana Olgica",
+              url: "https://cdn.llow22.com/audio/Sugarcane_unregistered.mp3",
+              pic: "https://cdn.llow22.com/picture/pianoStudy.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<h4 id="实例-歌单"><a href="#实例-歌单" class="headerlink" title="实例(歌单)"></a>实例(<strong>歌单</strong>)</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% aplayerlist %&#125;</span><br><span class="line">&#123;</span><br><span class="line">    &quot;narrow&quot;: false,</span><br><span class="line">    &quot;autoplay&quot;: false,</span><br><span class="line">    &quot;mode&quot;: &quot;random&quot;,</span><br><span class="line">    &quot;showlrc&quot;: 3,</span><br><span class="line">    &quot;mutex&quot;: true,</span><br><span class="line">    &quot;theme&quot;: &quot;#b7daff&quot;,</span><br><span class="line">    &quot;preload&quot;: &quot;metadata&quot;,</span><br><span class="line">    &quot;listmaxheight&quot;: &quot;513px&quot;,</span><br><span class="line">    &quot;width&quot;: &quot;50%&quot;,</span><br><span class="line">    &quot;music&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;title&quot;: &quot;Hall of name-piano&quot;,</span><br><span class="line">            &quot;author&quot;: &quot;piano&quot;,</span><br><span class="line">            &quot;url&quot;: &quot;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;audio&#x2F;hallOfName-piano.m4a&quot;,</span><br><span class="line">            &quot;pic&quot;: &quot;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;picture&#x2F;pianoStudy.jpg&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">        	&quot;title&quot;: &quot;Ana Olgica&quot;,</span><br><span class="line">            &quot;author&quot;: &quot;Sugarcane&quot;,</span><br><span class="line">            &quot;url&quot;: &quot;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;audio&#x2F;Sugarcane_unregistered.mp3&quot;,</span><br><span class="line">            &quot;pic&quot;: &quot;https:&#x2F;&#x2F;cdn.llow22.com&#x2F;picture&#x2F;pianoStudy.jpg&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">&#123;% endaplayerlist %&#125;</span><br></pre></td></tr></table></figure>
+<p>实现的就是这样的效果</p>
+
+        <div id="aplayer-QtBBJelM" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;"></div>
+			  <script>
+				  var options = {"narrow":false,"autoplay":false,"showlrc":3,"mode":"random","mutex":true,"theme":"#b7daff","preload":"metadata","listmaxheight":"513px","width":"50%","music":[{"title":"Hall of name-piano","author":"piano","url":"https://cdn.llow22.com/audio/hallOfName-piano.m4a","pic":"https://cdn.llow22.com/picture/pianoStudy.jpg"},{"title":"Ana Olgica","author":"Sugarcane","url":"https://cdn.llow22.com/audio/Sugarcane_unregistered.mp3","pic":"https://cdn.llow22.com/picture/pianoStudy.jpg"}]};
+				  options.element = document.getElementById("aplayer-QtBBJelM");
+				  var ap = new APlayer(options);
+			    window.aplayers || (window.aplayers = []);
+				  window.aplayers.push(ap);
+			  </script>
+
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>因为一个页面不能用两种方法,所以下一种方法在<a href="https://xhxm.xyz/2019/05/23/7e70/">下个页面</a>介绍</p>
+<p>参考地址:</p>
+<ol start="2">
+<li><a href="https://aplayer.js.org/#/zh-Hans/ecosystem">https://aplayer.js.org/#/zh-Hans/ecosystem</a></li>
+<li><a href="https://github.com/metowolf/MetingJS">https://github.com/metowolf/MetingJS</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>music</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo文章中插入音乐(2)</title>
+    <url>/2019/05/23/7e70/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>因为一些技术问题,一篇文章分两篇,接<a href="https://xhxm.xyz/2019/05/23/8e70/">上一篇</a>继续.</p>
+<span id="more"></span>
+
+<h3 id="利用MetingJS解析-3-0"><a href="#利用MetingJS解析-3-0" class="headerlink" title="利用MetingJS解析(3.0)"></a>利用<strong>MetingJS</strong>解析(3.0)</h3><h4 id="可以播放腾讯、网易、虾米、酷狗等"><a href="#可以播放腾讯、网易、虾米、酷狗等" class="headerlink" title="可以播放腾讯、网易、虾米、酷狗等"></a>可以播放腾讯、网易、虾米、酷狗等</h4><p><a href="https://github.com/metowolf/MetingJS">解析设置详情参考MetingJS</a></p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>这个是腾讯平台,id为”001orGdz4R9WP9”的音乐.顺便送上一个<a href="https://music.liuzhijin.cn/">音乐解析网站链接</a>,挺好用的.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% meting &quot;001orGdz4R9WP9&quot; &quot;tencent&quot; &quot;song&quot; &quot;theme:#FF4081&quot; &quot;mode:circulation&quot; &quot;mutex:true&quot; &quot;listmaxheight:340px&quot; &quot;preload:auto&quot; %&#125;</span><br></pre></td></tr></table></figure>
+
+
+    <div id="aplayer-dPHVlFHj" class="aplayer aplayer-tag-marker meting-tag-marker"
+         data-id="001orGdz4R9WP9" data-server="tencent" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"
+    ></div>`
+
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="https://github.com/MoePlayer/hexo-tag-dplayer">https://github.com/MoePlayer/hexo-tag-aplayer</a></p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>music</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>markdown基础语法介绍</title>
+    <url>/2019/05/23/5df8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>Markdown是一种轻量级标记语言,它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。总之就是很方便了,下面就来看一些markdown的基础语法</p>
+<span id="more"></span>
+
+<h2 id="Markdown基础语法"><a href="#Markdown基础语法" class="headerlink" title="Markdown基础语法"></a>Markdown基础语法</h2><ol>
+<li><a href="#0">介绍</a></li>
+<li><a href="#1">标题</a></li>
+<li><a href="#2">超链接</a></li>
+<li><a href="#3">分割线</a></li>
+<li><a href="#4">强调</a></li>
+<li><a href="#5">图片</a></li>
+<li><a href="#6">锚点</a></li>
+<li><a href="#7">代码块</a></li>
+<li><a href="#8">表格</a><h4 id="0">Markdown语法介绍</h4>
+Markdown 是一种轻量级标记语言，让写作者专注于写作而不用关注样式
+<h4 id="1">标题</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#		一级标题</span><br><span class="line">##		二级标题</span><br><span class="line">######	六级标题</span><br></pre></td></tr></table></figure>
+>注：'#'后加空格
+<h4 id="2">超链接</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[链接文字](链接地址 &quot;鼠标悬浮显示文字&quot;)</span><br></pre></td></tr></table></figure>
+例：[示例](https://xmxh.xyz "小名")
+<h4 id="3">分割线</h4>
+`---`
+>三个以上的短线即可做出分割线
+<h4 id="4">强调</h4>
+`*斜体强调文字*、**粗体强调文字**`
+<h4 id="5">图片</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![加载失败所显示文字](图片链接 &quot;悬浮显示文字&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="6">锚点</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">①&lt;h1 id&#x3D;&quot;1&quot;&gt;文字&lt;&#x2F;h1&gt;</span><br><span class="line">②[&quot;文字&quot;锚点](#1)</span><br><span class="line">注：id不能存在相同的</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>参考文章:<a href="https://github.com/younghz/Markdown">https://github.com/younghz/Markdown</a></p>
+<h4 id="7">代码块</h4>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">​```html</span><br><span class="line">代码放在中间</span><br></pre></td></tr></table></figure>
+
+<h4 id ="8">表格</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">|标题一|标题二|标题三|</span><br><span class="line">|:---|:---:|---:|</span><br><span class="line">|左对齐|居中对齐|右对齐|</span><br></pre></td></tr></table></figure>
+上面就是一个三行两列的表格,第一列,第二列,第三列,分别是左对齐,居中对齐,右对齐.效果如下
+
+<table>
+<thead>
+<tr>
+<th align="left">标题一</th>
+<th align="center">标题二</th>
+<th align="right">标题三</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">左对齐</td>
+<td align="center">居中对齐</td>
+<td align="right">右对齐</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>基础知识</category>
+      </categories>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>windows下虚拟机搭建gitlab</title>
+    <url>/2020/01/07/c5c7/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>windows下虚拟机啊搭建gitlab</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="windows下虚拟机啊搭建gitlab"><a href="#windows下虚拟机啊搭建gitlab" class="headerlink" title="windows下虚拟机啊搭建gitlab"></a>windows下虚拟机啊搭建gitlab</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ol>
+<li>vmware</li>
+<li>vmware-ubuntu18</li>
+</ol>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="安装gitlab"><a href="#安装gitlab" class="headerlink" title="安装gitlab"></a>安装gitlab</h3><ol>
+<li><p>安装所需依赖 <code>sudo apt-get install curl openssh-server ca-certificates </code></p>
+</li>
+<li><p>邮件通知服务 <code>sudo apt-get install postfix</code> 根据需求选择性安装</p>
+</li>
+<li><p>添加package <code>curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh &gt;&gt; gitlab.sh</code> ,然后执行<code>sudo bash gitlab.sh</code></p>
+</li>
+<li><p>(可选)更换gitlab国内源</p>
+<ol>
+<li><p>首先信任 GitLab 的 GPG 公钥,<code>curl https://packages.gitlab.com/gpg.key &gt;&gt;gitlab.key</code> ,然后添加 <code>sudo apt-key add gitlab.key</code></p>
+</li>
+<li><p>修改<code>/etc/apt/sources.list.d/gitlab-ce.list</code>,直接在原有文件上修改.修改链接参考<a href="https://mirror.tuna.tsinghua.edu.cn/help/gitlab-ce/">清华源</a></p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/ubuntu xenial main</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">后面的xenial main不用动(根据不同的版本会显示不同的代号),直接修改中间的一段链接就可以</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li><code>sudo apt-get install gitlab-ce</code></li>
+<li>安装成功之后,修改配置文件,<code>sudo vim /etc/gitlab/gitlab.rb</code> ,<code>external_url</code>那一行<br>  <img data-src="../assets/Snipaste_2020-01-07_15-53-44.png" alt="配置图片"></li>
+</ol>
+<h3 id="虚拟机相关设置"><a href="#虚拟机相关设置" class="headerlink" title="虚拟机相关设置"></a>虚拟机相关设置</h3><ol>
+<li>使用桥接模式,选择正确的设备,查看ip,<code>ifconig</code></li>
+<li>输入修改的域名和端口即可,默认端口好像是8080,可以直接在域名后面添加端口即可</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>gitlab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS中Array实例常用方法</title>
+    <url>/2020/03/21/e4ed/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>JS中Array实例的常用方法,包括es6新增的</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="导图"><a href="#导图" class="headerlink" title="导图"></a>导图</h1><p><img data-src="https://cdn.llow22.com/picture/hexo_picture/ARRAY%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%AE%9E%E5%88%97%EF%BC%89%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95.png" alt="思维导图"></p>
+<h2 id="补充-html版"><a href="#补充-html版" class="headerlink" title="补充:html版"></a>补充:html版</h2><ul>
+<li><a href="https://cdn.llow22.com/picture/hexo_picture/ARRAY%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%AE%9E%E5%88%97%EF%BC%89%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%20(2).html">点击在线预览导图</a></li>
+</ul>
+<h2 id="Array实列方法"><a href="#Array实列方法" class="headerlink" title="Array实列方法"></a>Array实列方法</h2><h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a><code>reduce</code></h3><ul>
+<li>输出一个东西，一个数字，一个数组一个对象都可以</li>
+<li>对空位的处理是跳过当次callbak执行，但是cb的第三个参数<code>index</code>依然会增加</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array">MDN-JavaScript标准内置对象Array</a></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JS</tag>
+        <tag>Array</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS中的对象（属性）特性</title>
+    <url>/2020/03/26/5e3b/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>JS 中对象详解-笔记</p>
+          </div>
+
+<span id="more"></span>
+
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a><code>Object</code></h2><h3 id="数据描述符"><a href="#数据描述符" class="headerlink" title="数据描述符"></a>数据描述符</h3><ul>
+<li><p><code>value</code>，就是属性值</p>
+</li>
+<li><p><code>configurable</code></p>
+<ul>
+<li>可以多次对一个属性进行特性修改，<strong>但是当 <code>configurable</code> 改为 <code>false</code>的时候，这个操作不可逆。</strong>此时除了 <code>writable</code>特性可以修改（有限制，只能由 <code>true</code> 变为 <code>false</code>,反之则不能），其他特性都不能修改。</li>
+</ul>
+</li>
+<li><p><code>writable</code> 是否可写</p>
+</li>
+<li><p><code>enumerable</code> 可枚举性，设置一个属性的 <code>enumerable</code> 为 <code>false</code> 的话，难么这个属性在<code>for of</code>中就不会迭代。</p>
+<ul>
+<li><p>补充:<code>for of</code>迭代普通对象(普通对象没有内置的<code>@@iterator</code>)</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 给普通函数自定义一个iterator接口</span></span><br><span class="line"><span class="keyword">let</span> o = &#123;<span class="attr">a</span>:<span class="string">&quot;a&quot;</span>,<span class="attr">b</span>:<span class="string">&quot;b&quot;</span>&#125;</span><br><span class="line"><span class="comment">// 通过 Object.defineProperty 添加,可以使其不具枚举性</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="built_in">Symbol</span>.iterator, &#123;</span><br><span class="line">  <span class="comment">// 设置此属性不可写</span></span><br><span class="line">  writable: <span class="literal">false</span>,</span><br><span class="line">  configurable: <span class="literal">true</span>,</span><br><span class="line">  <span class="comment">// 设置成不可枚举</span></span><br><span class="line">  enumerable: <span class="literal">false</span>,</span><br><span class="line">  value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _this = <span class="built_in">this</span>;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> ks = <span class="built_in">Object</span>.keys(_this);</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="function"><span class="title">next</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">          value: _this[ks[index++]],</span><br><span class="line">          done: index &gt; ks.length</span><br><span class="line">        &#125;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i <span class="keyword">of</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">// a,b</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 上述代码就简单的给一个对象添加了 iterator接口,使其可以使用 for..of迭代,具体的话可以也可以自定义实现复杂的遍历</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>原生就具备 iterator 接口的有 <code>Array</code>、<code>Map</code>、<code>Set</code>、<code>String</code>、函数的 arguments 对象、NodeList 对象。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="访问描述符"><a href="#访问描述符" class="headerlink" title="访问描述符"></a>访问描述符</h3><ul>
+<li><code>get</code> 这个是读取属性时调用的函数<ul>
+<li><code>obj.a</code> 当进行这种操作的时候，就执行[[Get]]操作，顺序是，先看看对象中有没有名称相同的属性，有就返回这个属性的值。没有，就遍历[[prototype]]（重中之重-原型链！）。实在没有，那就返回undefined</li>
+</ul>
+</li>
+<li><code>set</code> 这个是写入属性时条用的函数<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> o = &#123;&#125;;</span><br><span class="line"><span class="comment">// 通过 Object.defineProperty 添加了一个 a 属性。</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="string">&quot;a&quot;</span>, &#123;</span><br><span class="line">  configurable:<span class="literal">true</span>,</span><br><span class="line">  enumerable: <span class="literal">true</span>,</span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>._a_;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">set</span>(<span class="params">val</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>._a_ = val;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty()"></a><code>Object.defineProperty()</code></h3><ul>
+<li><p>数据属性和访问器属性不能同时存在，否则报错。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> o = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="string">&quot;a&quot;</span>, &#123;</span><br><span class="line">  configurable: <span class="literal">true</span>,</span><br><span class="line">  enumerable: <span class="literal">true</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 数据属性</span></span><br><span class="line">  <span class="comment">//value: &quot;temp&quot;,</span></span><br><span class="line">  <span class="comment">// writable:true,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//访问器属性</span></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>._a_;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">set</span>(<span class="params">val</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>._a_ = val;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以通过这个方法，来修改对象属性的特性。接收三个参数。属性所在对象、属性的名字、描述符对象</p>
+</li>
+<li><p>如果用 <code>Object.defineProperty()</code>方法新建属性的时候，不指定<code>configurable</code> <code>writable</code> <code>enumerable</code>的话，都是默认<code>false</code>。（<code>value</code>默认为<code>undefined</code>）</p>
+</li>
+<li><p>如果用 <code>Object.defineProperty()</code>只设置<code>set</code> 或 <code>get</code> 一个，剩余一个默认是 <code>undefined</code></p>
+</li>
+<li><p>如果用 <code>Object.defineProperty()</code>只设置<code>configurable</code>和<code>enumerable</code>，那么相应的属性通过<code>Object.getOwnPropertyDescriptor()</code>返回的对象则有<code>configurable</code> <code>enumerable</code> <code>writable</code> 和 <code>value</code></p>
+</li>
+<li><p>vue2x 中就是通过此方法监听数据的。(vue3用了<code>Proxy</code>)，这种方法是一次性递归</p>
+</li>
+</ul>
+<h3 id="一些其他相关的方法"><a href="#一些其他相关的方法" class="headerlink" title="一些其他相关的方法"></a>一些其他相关的方法</h3><h4 id="对象不变性"><a href="#对象不变性" class="headerlink" title="对象不变性"></a>对象不变性</h4><ul>
+<li>通过 <code>writable:false</code>和<code>configurable:false</code> 就可以创建一个<strong>不可修改的且不能删除、重定义的属性。</strong></li>
+<li><code>Object.preventExtensions()</code> 对象不可扩展。效果：不能添加新属性。</li>
+<li><code>Object.seal()</code> 先调用<code>Object.preventExtensions()</code>然后再将已有属性标记为 <code>configurable:fasle</code>。效果就是，不能添加新属性，且不能重新配置或者删除已有属性。（可以修改值）</li>
+<li><code>Object.freeze()</code> 这个是先调用 <code>Object.seal()</code> ，然后又把所有属性的数据属性标记为<code>writable:false</code>。效果：啥都不能干，只能用。**注意：上述两种方法（包括这一个），都只是限制了对象本身，对象中引用的其他对象不受影响。可以用递归来个’深度冻结’**。’深度冻结’代码演示如下：<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> o= &#123;<span class="attr">obj1</span>:&#123;<span class="attr">name</span>:<span class="string">&quot;obj对象&quot;</span>,<span class="attr">obj2</span>:&#123;<span class="attr">name</span>:<span class="string">&#x27;obj2对象&#x27;</span>&#125;&#125;,<span class="attr">name</span>:<span class="string">&#x27;你好&#x27;</span>&#125;</span><br><span class="line">o.new = <span class="string">&quot;我是新属性&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(o); <span class="comment">//&#123; obj1: &#123; name: &#x27;obj对象&#x27;, obj2: &#123; name: &#x27;obj2对象&#x27; &#125; &#125;,name: &#x27;你好&#x27;,new: &#x27;我是新属性&#x27; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// &#x27;深度冻结&#x27;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepObj</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line"> <span class="keyword">for</span>(<span class="keyword">let</span> i <span class="keyword">in</span> obj)&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.toString.call(obj[i])===<span class="string">&quot;[object Object]&quot;</span>) &#123;</span><br><span class="line">    deepObj(obj[i])</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="built_in">Object</span>.freeze(obj)</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">deepObj(o)</span><br><span class="line">o.new2 = <span class="string">&#x27;我也是新属性&#x27;</span></span><br><span class="line">o.obj1.new =<span class="string">&quot;试图向obj1对象添加新属性&quot;</span></span><br><span class="line">o.obj1.obj2.new = <span class="string">&quot;试图向obj2对象添加新属性&quot;</span></span><br><span class="line">o.obj1.obj2.name = <span class="string">&#x27;试图修改obj2中的name属性&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(o); <span class="comment">//经过这些修改,打印 o 对象与冻结之前的返回值相同  &#123; obj1: &#123; name: &#x27;obj对象&#x27;, obj2: &#123; name: &#x27;obj2对象&#x27; &#125; &#125;,name: &#x27;你好&#x27;, new: &#x27;我是新属性&#x27; &#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="真的是一些其他相关的方法😂"><a href="#真的是一些其他相关的方法😂" class="headerlink" title="真的是一些其他相关的方法😂"></a>真的是一些其他相关的方法😂</h4><ul>
+<li><code>Object.getOwnPropertyDescriptor()</code> 两个参数：对象，属性名。获取给定属性的描述符，返回一个对象。</li>
+<li><code>Object.defineProperties()</code> 同时定义多个属性，使用上参考 <code>Object.defineProperty()</code></li>
+</ul>
+<h2 id="补充-对象深克隆"><a href="#补充-对象深克隆" class="headerlink" title="补充-对象深克隆"></a>补充-对象深克隆</h2><ul>
+<li>当存在以下这种情况，对象不可深克隆<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> antherArray = [];</span><br><span class="line"><span class="keyword">let</span> antherObject = &#123;</span><br><span class="line">  c: <span class="literal">true</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> myObject = &#123;</span><br><span class="line">  a: <span class="number">2</span>,</span><br><span class="line">  b: antherArray,</span><br><span class="line">  c: antherObject</span><br><span class="line">&#125;;</span><br><span class="line">antherArray.push(antherObject,myObject)</span><br><span class="line"><span class="comment">// 再上面一行代码执行之后，无法使用递归对 myObject进行克隆，解决方法吧，暂时不知道😂</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《你不知道的 JavaScript-上卷》（3.3）</li>
+<li>《JavaScript 高级程序设计-第三版》（6.1）</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JS进阶</tag>
+        <tag>Object</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>javascript类型转换</title>
+    <url>/2020/03/10/a9e3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            
+          </div>
+
+<span id="more"></span>
+
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><hr>
+]]></content>
+      <categories>
+        <category>默认</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>JavaScript实现冒泡排序、选择排序</title>
+    <url>/2019/09/28/15b4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>用JavaScript实现冒泡排序和选择排序 </p>
+          </div>
+<span id="more"></span>
+
+
+
+<h2 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序    (Bubble Sort)"></a>冒泡排序    (Bubble Sort)</h2><p>​        冒泡排序就是重复“从序列左(右)开始比较相邻两个数字的大小，再根据结果交换两个数字的位置”这一操作的算法。在这个过程中，数字会像泡泡一样，慢慢从左(右)往右(左)“浮”到序列的另顶端，所以这个算法才被称为“冒泡排序”。</p>
+<h3 id="实现方法①"><a href="#实现方法①" class="headerlink" title="实现方法①"></a>实现方法①</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">major</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; arr.length - <span class="number">1</span>; j++) &#123;</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length - <span class="number">1</span> - j; i++) &#123;</span><br><span class="line">         <span class="keyword">var</span> temp;</span><br><span class="line">         <span class="keyword">if</span> (arr[i] &gt; arr[i + <span class="number">1</span>]) &#123;</span><br><span class="line">           temp = arr[i];</span><br><span class="line">           arr[i] = arr[i + <span class="number">1</span>];</span><br><span class="line">           arr[i + <span class="number">1</span>] = temp;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="built_in">console</span>.log(arr[arr.length - <span class="number">1</span>]);</span><br><span class="line">     <span class="built_in">console</span>.log(arr);</span><br><span class="line">   &#125;</span><br><span class="line">   major([<span class="number">5</span>, <span class="number">6</span>, <span class="number">8744</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">96</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">6</span>]);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="选择排序-Selection-Sort"><a href="#选择排序-Selection-Sort" class="headerlink" title="选择排序    (Selection Sort)"></a>选择排序    (Selection Sort)</h2><p>​    选择排序就是重复“从待排序的数据中寻找最小值，将其与序列最左边的数字进行交换”这一操作的算法。在序列中寻找最小值时使用的是线性查找。</p>
+<h3 id="实现方法①-1"><a href="#实现方法①-1" class="headerlink" title="实现方法①"></a>实现方法①</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">selectionSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> minIndex = i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; len; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;</span><br><span class="line">        minIndex = j;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (i !== minIndex) &#123;</span><br><span class="line">      swap(arr, i, minIndex);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> arr = [<span class="number">91</span>, <span class="number">60</span>, <span class="number">96</span>, <span class="number">7</span>, <span class="number">35</span>, <span class="number">65</span>, <span class="number">10</span>, <span class="number">65</span>, <span class="number">9</span>, <span class="number">30</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">77</span>, <span class="number">81</span>, <span class="number">24</span>];</span><br><span class="line"><span class="built_in">console</span>.log(selectionSort(arr));</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
+<li><a href="https://www.rayjune.me/2018/03/22/elegant-javascript-sorting-algorithm-es6/">https://www.rayjune.me/2018/03/22/elegant-javascript-sorting-algorithm-es6/</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>对象深拷贝(JS)</title>
+    <url>/2020/02/29/be33/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>实现对象的深拷贝</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><p>测试s</p>
+<h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>JavaScript</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>闭包</title>
+    <url>/2019/05/31/1cf7/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>闭包是由函数以及创建该函数的词法环境组合而成。<strong>这个环境包含了这个闭包创建时所能访问的所有局部变量</strong> </p>
+          </div>
+<span id="more"></span>
+
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><h2 id="官方文档代码片段"><a href="#官方文档代码片段" class="headerlink" title="官方文档代码片段"></a>官方文档代码片段</h2><pre><code><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeFunc</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">&quot;Mozilla&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">displayName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> displayName;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> myFunc = makeFunc();</span><br><span class="line">myFunc();</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>在我们的例子中，<code>myFunc</code> 是执行 <code>makeFunc</code> 时创建的 <code>displayName</code> 函数实例的引用，而 <code>displayName</code> 实例仍可访问其词法作用域中的变量，即可以访问到 <code>name</code> 。由此，当 <code>myFunc</code> 被调用时，<code>name</code> 仍可被访问，其值 <code>Mozilla</code> 就被传递到<code>alert</code>中。</p>
+<h2 id="什么是闭包"><a href="#什么是闭包" class="headerlink" title="什么是闭包"></a>什么是闭包</h2><ul>
+<li><p><strong>函数记住并能访问所在的词法作用域，即使在词法作用域之外使用函数，也能访问绑定好的词法作用域，没有销毁函数作用域，然后就产生了闭包。（闭包随处可见）</strong></p>
+</li>
+<li><p>经典应用就是循环定时器打印i值</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i =<span class="number">1</span>;i&lt;<span class="number">3</span>;i++)&#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i)</span><br><span class="line">  &#125;,<span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 上面的代码，每个循环创建出来的函数用的都是共享的i值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i =<span class="number">1</span>;i&lt;<span class="number">3</span>;i++)&#123;</span><br><span class="line">   (<span class="function"><span class="keyword">function</span>(<span class="params">j</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(j)</span><br><span class="line">      &#125;,<span class="number">1000</span>)</span><br><span class="line">   &#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 上面的这一段，则是，每次循环都创建了独立的作用域，并且每个作用域中都包含一个j，j绑定了当次循环i的值，所以，即使在1000ms之后执行函数，依旧能访问不同的j值。</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2></li>
+<li><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures">MDN闭包</a></p>
+</li>
+<li><p>《你不知道的javascript上》-第一部分-第五章</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue中axios封装</title>
+    <url>/2020/03/11/1c57/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            
+          </div>
+
+<span id="more"></span>
+
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><hr>
+]]></content>
+      <categories>
+        <category>默认</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>v-for循环出的标签点击时给添加一个active的类名</title>
+    <url>/2020/03/06/59ed/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>有一标签<code>v-for</code>循环,实现点击每个循环的标签给其一个激活样式</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="vue中v-for循环出的标签根据鼠标点击设置active样式"><a href="#vue中v-for循环出的标签根据鼠标点击设置active样式" class="headerlink" title="vue中v-for循环出的标签根据鼠标点击设置active样式"></a>vue中v-for循环出的标签根据鼠标点击设置active样式</h1><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">&quot;(item,index) in 5&quot;</span> <span class="attr">:key</span>=<span class="string">index</span> @<span class="attr">tap</span>=<span class="string">&quot;clickItem(index)&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;&#123;active:tempArr[index]&#125;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码指,有一标签<code>v-for</code>循环,想要实现点击每个循环的标签给其一个激活样式</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span>&#123;</span><br><span class="line">    tempArr:[<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>,<span class="literal">false</span>] <span class="comment">//此处tempArr.length只要大于5就可以</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br><span class="line">method:&#123;</span><br><span class="line">  <span class="function"><span class="title">clickItem</span>(<span class="params">index</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.temp = &#123;&#125;</span><br><span class="line">    <span class="built_in">this</span>.tempArr[index] = <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>源码: <a href="https://gitee.com/wuzhidexiaoming/material/blob/master/20200305/vue-demo1.html">https://gitee.com/wuzhidexiaoming/material/blob/master/20200305/vue-demo1.html</a></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue组件通信</title>
+    <url>/2020/03/24/90e3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>vue 组件常用组件传值的方法-笔记</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="Vue-组件通信的几种方式"><a href="#Vue-组件通信的几种方式" class="headerlink" title="Vue 组件通信的几种方式"></a>Vue 组件通信的几种方式</h1><h2 id="父子通信props-emit"><a href="#父子通信props-emit" class="headerlink" title="父子通信props/$emit"></a>父子通信<code>props</code>/<code>$emit</code></h2><ul>
+<li>父(传): 通过自定义属性给子组件传递父组件的数据</li>
+<li>子(收): 通过<code>props</code>选项接收来自父组件的数据。<ul>
+<li><code>undefined</code> 和 <code>null</code> 可以通过任意 <code>type</code> 类型</li>
+<li><code>props</code>早于组件实例创建之前验证，实例的属性<code>data</code>、<code>computer</code>等在 <code>default</code>(默认值，当没有接收到数据) 或 <code>validator</code>(自定义验证函数)中无法使用。</li>
+<li><code>type</code> 或 <code>validator</code>验证失败的话，在开发环境中只会在控制台报错，依旧会继续进行传值。</li>
+</ul>
+</li>
+</ul>
+<h2 id="ref-refs"><a href="#ref-refs" class="headerlink" title="ref / $refs"></a><code>ref</code> / <code>$refs</code></h2><ul>
+<li>这个可以通过 <code>$refs</code> 获取指定 <code>ref</code>实例的数据和方法。</li>
+</ul>
+<h2 id="eventbus-事件总线"><a href="#eventbus-事件总线" class="headerlink" title="eventbus 事件总线"></a><code>eventbus</code> 事件总线</h2><ul>
+<li><code>$emit</code> 触发当前实例上的事件，附加的参数传给监听器回调–传值的组件</li>
+<li><code>$on</code> 监听当前实例上的事件，回调函数会接收 <code>$emit</code>触发事件时附加的参数</li>
+<li><code>$off</code> 在 <code>beforeDestroy</code> 中销毁事件，防止内存泄漏</li>
+</ul>
+<h2 id="vuex"><a href="#vuex" class="headerlink" title="vuex"></a>vuex</h2><ul>
+<li>单一状态树，具体文档说的很详细(这里只提一下,但是它是vue中很重要的一部分)。<a href="https://vuex.vuejs.org/zh/">文档地址</a></li>
+</ul>
+<h2 id="其他的不常用"><a href="#其他的不常用" class="headerlink" title="其他的不常用"></a>其他的不常用</h2><ul>
+<li><code>$children</code> / <code>$parent</code><ul>
+<li>可以通过 <code>parent</code> 选项建立父子组件的关系。那样子实例就可以用 <code>this.$parent</code> 访问父实例</li>
+</ul>
+</li>
+<li><code>provide</code> / <code>inject</code> 选项，直接能将数据传给888代子孙。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://cn.vuejs.org/v2/guide/routing.html">https://cn.vuejs.org/v2/guide/routing.html</a></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>组件通信</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue数据监听原理</title>
+    <url>/2020/03/27/560e/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>vue 中是如何对数据进行监听的–笔记</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="Vue-数据监听（对象、数组）"><a href="#Vue-数据监听（对象、数组）" class="headerlink" title="Vue 数据监听（对象、数组）"></a>Vue 数据监听（对象、数组）</h1><h2 id="这是对象的监听方式"><a href="#这是对象的监听方式" class="headerlink" title="这是对象的监听方式"></a>这是对象的监听方式</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * updateView() 更新</span></span><br><span class="line"><span class="comment"> * defineReactive() 核心功能</span></span><br><span class="line"><span class="comment"> * observer() 入口</span></span><br><span class="line"><span class="comment"> * /</span></span><br><span class="line"><span class="comment">function updateView() &#123;</span></span><br><span class="line"><span class="comment">  console.log(&#x27;更新视图&#x27;);</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">function defineReactive(target,key,value) &#123;</span></span><br><span class="line"><span class="comment">  observer();</span></span><br><span class="line"><span class="comment">  Object.defineProperty(target,key,&#123;</span></span><br><span class="line"><span class="comment">    get()&#123;</span></span><br><span class="line"><span class="comment">      return value;</span></span><br><span class="line"><span class="comment">    &#125;,</span></span><br><span class="line"><span class="comment">    set(val)&#123;</span></span><br><span class="line"><span class="comment">      observer();</span></span><br><span class="line"><span class="comment">      if (val!==value) &#123;</span></span><br><span class="line"><span class="comment">        value = val;</span></span><br><span class="line"><span class="comment">        updateView();</span></span><br><span class="line"><span class="comment">      &#125;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">  &#125;)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">function observer(target) &#123;</span></span><br><span class="line"><span class="comment">  if (typeof target !==&#x27;object&#x27; || typeof target===&#x27;null&#x27;) &#123;</span></span><br><span class="line"><span class="comment">    return target</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  for(let key in target)&#123;</span></span><br><span class="line"><span class="comment">    defineReactive(target,key,target[key])</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="这是数组的监听方式"><a href="#这是数组的监听方式" class="headerlink" title="这是数组的监听方式"></a>这是数组的监听方式</h2><ul>
+<li>Vue 对数组的处理没有采用给键添加 getter/setter 的形式实现响应式。文档中说的是因为性能问题没有这样做。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * arrProto 新数组原型</span></span><br><span class="line"><span class="comment"> * updateView() 更新</span></span><br><span class="line"><span class="comment"> * defineReactive() 核心功能</span></span><br><span class="line"><span class="comment"> * observer() 入口</span></span><br><span class="line"><span class="comment"> * /</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">const oldArrProto = Array.prototype;</span></span><br><span class="line"><span class="comment">const arrProto = Object.create(oldArrProto);</span></span><br><span class="line"><span class="comment">let methods = [&#x27;push&#x27;,&#x27;shift&#x27;]; // 此处拿这两个方法举例</span></span><br><span class="line"><span class="comment">methods.forEach(methodName=&gt;&#123;</span></span><br><span class="line"><span class="comment">  arrProto[methodName]=function()&#123;</span></span><br><span class="line"><span class="comment">    updateView();</span></span><br><span class="line"><span class="comment">    oldArrProto[methodName].call(this,...arguments);</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">function updateView() &#123;</span></span><br><span class="line"><span class="comment">  console.log(&#x27;更新视图&#x27;);</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">function defineReactive(target,key,value) &#123;</span></span><br><span class="line"><span class="comment">  observer();</span></span><br><span class="line"><span class="comment">  Object.defineProperty(target,key,&#123;</span></span><br><span class="line"><span class="comment">    get()&#123;</span></span><br><span class="line"><span class="comment">      return value;</span></span><br><span class="line"><span class="comment">    &#125;,</span></span><br><span class="line"><span class="comment">    set(val)&#123;</span></span><br><span class="line"><span class="comment">      observer();</span></span><br><span class="line"><span class="comment">      if (val!==value) &#123;</span></span><br><span class="line"><span class="comment">        value = val;</span></span><br><span class="line"><span class="comment">        updateView();</span></span><br><span class="line"><span class="comment">      &#125;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">  &#125;)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">function observer(target) &#123;</span></span><br><span class="line"><span class="comment">  if (typeof target !==&#x27;object&#x27; || typeof target===&#x27;null&#x27;) &#123;</span></span><br><span class="line"><span class="comment">    return target</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // 相比对象的监听，此处添加一个判断，如果target为数组，则改变target的原型，使target使用开始定义的arrProto中的push和shift方法</span></span><br><span class="line"><span class="comment">  if (Array.isArray(target)) &#123;</span></span><br><span class="line"><span class="comment">    Object.setPrototypeof(target,arrProto)</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  for(let key in target)&#123;</span></span><br><span class="line"><span class="comment">    defineReactive(target,key,target[key])</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>以上就是 vue 中对数组和对象的监听，特点就是，<strong>一次性递归到底（计算量略大）</strong>,后来添加的新属性，无法添加到响应式中。（可以用 vm.$set，实现方式还不知道。）</li>
+<li>可以实现需要使用数据时，再将对应数据添加到响应式系统。学会了再记。</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue进阶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue自定义v-model</title>
+    <url>/2020/03/27/ef1d/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>vue 中自定义 v-model 写法–笔记</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="vue-中自定义-v-model"><a href="#vue-中自定义-v-model" class="headerlink" title="vue 中自定义 v-model"></a>vue 中自定义 v-model</h1><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ul>
+<li>个人认为严格来说,vue 属于单项数据流。因为什么双向绑定啊，其实是语法糖</li>
+<li>用到了<code>model</code>、<code>props</code></li>
+</ul>
+<h2 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// 父组件</span><br><span class="line"><span class="tag">&lt;<span class="name">xm-input</span> <span class="attr">v-model</span>=<span class="string">&quot;text&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">xm-input</span>&gt;</span></span><br><span class="line">// 上面的写法与下面这个一段效果相同！如果用下面的这段写法，在子组件中不需要配置 model 选项。</span><br><span class="line"><span class="tag">&lt;<span class="name">xm-input</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">:text</span>=<span class="string">&quot;text&quot;</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">change</span>=<span class="string">&quot;val=&gt;text = val&quot;</span></span></span><br><span class="line"><span class="tag">&gt;</span><span class="tag">&lt;/<span class="name">xm-input</span>&gt;</span></span><br><span class="line">... </span><br><span class="line">... </span><br><span class="line">data()&#123; return&#123; text:&quot;小名&quot; &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子组件</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;main&quot;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;text&quot;</span> @input=<span class="string">&quot;changeFn(e)&quot;</span> /&gt;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  model: &#123;</span><br><span class="line">    prop: <span class="string">&quot;text&quot;</span>, <span class="comment">// prop后面的 text 与下面 props中的 text 必须一直，而下面 props中的 text是通过自定义属性而来的。v-model指令替我们做了一些东西（监听事件，自定义属性。）。</span></span><br><span class="line">    event: <span class="string">&quot;cahgne&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  props:&#123;</span><br><span class="line">    text:&#123;</span><br><span class="line">      type:<span class="built_in">String</span>,</span><br><span class="line">      <span class="function"><span class="title">default</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    <span class="function"><span class="title">changeFn</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">      <span class="comment">// 将input输入框的值传到change事件中</span></span><br><span class="line">      <span class="built_in">this</span>.$emit(<span class="string">&#x27;change&#x27;</span>,e.target.value)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="整个自定义v-model的逻辑"><a href="#整个自定义v-model的逻辑" class="headerlink" title="整个自定义v-model的逻辑"></a>整个自定义v-model的逻辑</h2><ul>
+<li>逻辑就是，自定义一个属性和一个事件，在子组件中，更改内容触发 input 事件时通过 $emit()调用之前自定义的事件A并将input输入框的value当作附加参数，A事件做的就是把自定义属性以来的数据变为接受的 value值，然后，自定义属性依赖数据变动，子组件props接受的数据也变动，改变 input 输入框中的内容。</li>
+</ul>
+<h2 id="常见应用"><a href="#常见应用" class="headerlink" title="常见应用"></a>常见应用</h2><ul>
+<li>颜色选择器</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在vue使用高德地图获取定位</title>
+    <url>/2020/01/08/4e8c/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>在Vue中使用高德Api定位</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="在Vue中使用高德Api定位"><a href="#在Vue中使用高德Api定位" class="headerlink" title="在Vue中使用高德Api定位"></a>在Vue中使用高德Api定位</h1><h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>申请高德地图key</li>
+</ol>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li><p>在<code>/utils/</code>下新建<code>Amap.js</code>文件,给</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">MapLoader</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.AMap) &#123;</span><br><span class="line">      resolve(<span class="built_in">window</span>.AMap);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">&quot;script&quot;</span>);</span><br><span class="line">      script.type = <span class="string">&quot;text/javascript&quot;</span>;</span><br><span class="line">      script.async = <span class="literal">true</span>;</span><br><span class="line">      script.src =</span><br><span class="line">        <span class="string">&quot;https://webapi.amap.com/maps?v=1.4.15&amp;key=bac4ad748318efc02caa0bf153e40f54=AMap.Geocoder&amp;callback=initAMap&quot;</span>;</span><br><span class="line">      script.onerror = reject;</span><br><span class="line">      <span class="built_in">document</span>.head.appendChild(script);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">window</span>.initAMap = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      resolve(<span class="built_in">window</span>.AMap);</span><br><span class="line">    &#125;;</span><br><span class="line">     &#125;);</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// 返回一个promise对象,给出window.AMap数据,用.then处理   给window添加Amap方法</span></span><br><span class="line"><span class="comment">// QS--怎么把Amap方法添加给Vue对象上?</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="3">
+<li>在需要使用地图的页面,引入Amap.js,创建method方法,处理函数MapLoader返回的Promise对象 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">.then(<span class="function"><span class="params">Amap</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(Amap)&#125;,<span class="function"><span class="params">error</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(error)&#125;)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>Api</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue项目部署</title>
+    <url>/2020/03/11/a69a/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>打包好的 Vue 项目部署到服务器上</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h1><h2 id="放到-github、gitee、coding-等平台（非常简单）"><a href="#放到-github、gitee、coding-等平台（非常简单）" class="headerlink" title="放到 github、gitee、coding 等平台（非常简单）"></a>放到 github、gitee、coding 等平台（非常简单）</h2><ul>
+<li>初始化 dist 文件夹 <code>git init</code></li>
+<li>提交到远程仓库</li>
+<li><strong>开启 pages 服务</strong>（国内建议 gitee，但是 gitee 需要手动部署更新，开会员可解决）</li>
+</ul>
+<h2 id="放到对象存储-非常简单"><a href="#放到对象存储-非常简单" class="headerlink" title="放到对象存储(非常简单)"></a>放到对象存储(非常简单)</h2><ul>
+<li><strong>国内的对象存储都需要一个备过案的域名</strong>,然后像七牛、又拍、腾讯云、阿里云等对象存储服务都不错。（个人使用，推荐又拍）</li>
+<li>直接将打包好的文件<code>dist</code>下的<code>index.html</code>和<code>static</code>目录上传到对象存储中即可</li>
+</ul>
+<h2 id="部署到服务器-简单-使用-nginx"><a href="#部署到服务器-简单-使用-nginx" class="headerlink" title="部署到服务器(简单,使用 nginx)"></a>部署到服务器(简单,使用 nginx)</h2><h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装<code>nginx</code></h3><ul>
+<li>直接安装编译好的<code>nginx</code>(简单) <code>sudo pacman -S nginx</code></li>
+</ul>
+<h3 id="修改nginx配置"><a href="#修改nginx配置" class="headerlink" title="修改nginx配置"></a>修改<code>nginx</code>配置</h3><ul>
+<li><p><code>nginx -t</code> 查看<code>nginx.config</code>的位置,一般在<code>/etc/nginx/nginx.config</code></p>
+</li>
+<li><p><code>suod vim /etc/nginx/nginx.config</code> 编辑<code>nginx</code> 配置文件</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen  888;  // 端口</span><br><span class="line">  server_name  test;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    root  home/ming/www/dist; // 前端文件路径  打包好的项目上传到了 /home/ming/www/dist</span><br><span class="line">    index  index.html; // hash模式只配置访问html就可以了</span><br><span class="line">    try_files $uri $uri/ /index.html; // history模式下</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>systemctl reload nginx</code> 重启<code>nginx</code> 服务,<code>systemctl status nginx</code>查看<code>nginx</code>状态</p>
+</li>
+<li><p>访问<code>xxx.xxx.xxx.xx:888</code> 即可访问</p>
+</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>简化打包步骤</title>
+    <url>/2021/01/14/bdd8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>vue-cli 自定义环境变量 实现给测试频繁打包 不需更换域名的问题</p>
+          </div>
+
+<span id="more"></span>
+
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>目前负责的项目有三个环境</p>
+<ul>
+<li>本地开发环境</li>
+<li>线上测试环境</li>
+<li>线上正式环境</li>
+</ul>
+<p>测试环境和正式环境的域名不同,再加上需要频繁打包给测试用,每次打包都要更换 pro 域名,然后运行 <code>npm run build</code> 等上一小会,之后再压缩发给后台,整个流程有些时候一天要做十多遍。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>起初是想利用 webhook 实现简易自动部署，后来想了下把 构建过程放在性能不太好的服务器上感觉不太好，就打算在服务端跑一个 node 服务用来接收 dist.zip 文件然后解压移动到指定位置即可，这样一来就只需要用 postman 调用一下上传文件的接口即可，而且可以让 测试的微信绑定 <a href="http://sc.ftqq.com/3.version">server 酱 </a>实现 部署成功后微信通知</p>
+<h3 id="nodejs-上传文件接口"><a href="#nodejs-上传文件接口" class="headerlink" title="nodejs 上传文件接口"></a>nodejs 上传文件接口</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> fetch = <span class="built_in">require</span>(<span class="string">&quot;node-fetch&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&quot;body-parser&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> multer = <span class="built_in">require</span>(<span class="string">&quot;multer&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> bodyParse = <span class="built_in">require</span>(<span class="string">&quot;body-parser&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> process = <span class="built_in">require</span>(<span class="string">&quot;child_process&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; unzip &#125; = <span class="built_in">require</span>(<span class="string">&quot;zlib&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> port = <span class="number">8888</span>;</span><br><span class="line"><span class="keyword">const</span> urlencodedParser = bodyParser.urlencoded(&#123; <span class="attr">extended</span>: <span class="literal">false</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> upload = multer(&#123; <span class="attr">dest</span>: <span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/uploads`</span> &#125;);</span><br><span class="line">app.post(<span class="string">&quot;/upload&quot;</span>, upload.any(), urlencodedParser, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 判断 上传的文件是否为 dist.zip</span></span><br><span class="line">  <span class="built_in">console</span>.log(req.files);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">typeof</span> req.files);</span><br><span class="line">  <span class="keyword">if</span> (req.files.length !== <span class="number">1</span>) &#123;</span><br><span class="line">    res.send(<span class="string">&quot;file must be one&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (req.files[<span class="number">0</span>].originalname !== <span class="string">&quot;dist.zip&quot;</span>) &#123;</span><br><span class="line">    res.send(<span class="string">&quot;filename must be dist.zip&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (req.files[<span class="number">0</span>].mimetype !== <span class="string">&quot;application/zip&quot;</span>) &#123;</span><br><span class="line">    res.send(<span class="string">&quot;file must be application/zip&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    process.exec(</span><br><span class="line">      <span class="string">&quot;rm -rf ./dist/* &amp;&amp; rm -rf /home/ubuntu/wwwroot/llow22.com/*&quot;</span>,</span><br><span class="line">      (error) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (error) res.send(<span class="string">&quot;run shell error&quot;</span>);</span><br><span class="line">        process.exec(<span class="string">`unzip -o -d ./dist <span class="subst">$&#123;req.files[<span class="number">0</span>].path&#125;</span>`</span>, <span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (error) res.send(<span class="string">&quot;unzip error&quot;</span>);</span><br><span class="line">          process.exec(</span><br><span class="line">            <span class="string">`cp -r ./dist/dist/* /home/ubuntu/wwwroot/llow22.com`</span>,</span><br><span class="line">            (error) =&gt; &#123;</span><br><span class="line">              <span class="keyword">if</span> (error) res.send(<span class="string">&quot;cp error&quot;</span>);</span><br><span class="line">              <span class="comment">// SCKEY server酱 自行获取</span></span><br><span class="line">              fetch(</span><br><span class="line">                <span class="string">&quot;https://sc.ftqq.com/SCKEY.send?text=%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F~&amp;&amp;desp=&quot;</span> +</span><br><span class="line">                  (req.body.desp || <span class="string">&quot;没有部署说明~&quot;</span>)</span><br><span class="line">              )</span><br><span class="line">                .then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.text())</span><br><span class="line">                .then(<span class="function">(<span class="params">body</span>) =&gt;</span> &#123;&#125;);</span><br><span class="line">              res.send(<span class="string">&quot;cp success&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">          );</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">app.listen(port, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Example app listening at http://localhost:<span class="subst">$&#123;port&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="vue-cli-自定义环境变量"><a href="#vue-cli-自定义环境变量" class="headerlink" title="vue-cli 自定义环境变量"></a>vue-cli 自定义环境变量</h3><p>用自定义环境变量,这样就不用每次打包都要更换域名,打完包还要再换回来的重复操作了</p>
+<ol>
+<li><p>创建 .env.alpha 文件在项目根目录,写以下变量   </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NODE_ENV &#x3D; &#39;production&#39;</span><br><span class="line">VUE_APP_DOMAIN &#x3D; &#39;alpha&#39;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当你运行 vue-cli-service build 命令时，无论你要部署到哪个环境，应该始终把 NODE_ENV 设置为 “production” 来获取可用于部署的应用程序。 <a href="https://cli.vuejs.org/zh/guide/mode-and-env.html#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">vue-cli文档</a></p>
+</blockquote>
+<p>设置<code>NODE_ENV</code>为<code>production</code>是因为会有打包优化,下面的 <code>VUE_APP_DOMAIN = &#39;alpha&#39;</code>就是自定义的变量了</p>
+</li>
+<li><p>在 package.json 的 scripts 中添加 命令 <code>&quot;build:alpha&quot;: &quot;vue-cli-service build --mode alpha&quot;,</code>(–mode 后面的 alpha 需要与 上面创建的文件.env 后面的一致)</p>
+</li>
+<li><p>设置好上面的之后,在代码设置<code>baseUrl</code>的地方就可以加入判断 <code>process.env.VUE_APP_DOMAIN===&#39;alpha&#39;</code>,然后将 <code>baseUrl</code> 设置为固定的 测试环境域名</p>
+</li>
+</ol>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><ol>
+<li>做完上面的准备工作后,就可以 <code>npm run build:alpha</code>,然后压缩打包出来的 dist 文件夹,然后通过postman 等调用上传文件的接口将 dist.zip 和部署说明输入即可</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://cli.vuejs.org/zh/guide/mode-and-env.html#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">vue cli 文档</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>手抄vue风格指南</title>
+    <url>/2020/03/01/df5a/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>Vue的一些规范</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="风格指南"><a href="#风格指南" class="headerlink" title="风格指南"></a>风格指南</h1><h2 id="A级别-必要"><a href="#A级别-必要" class="headerlink" title="A级别(必要)"></a>A级别(必要)</h2><ul>
+<li>组件名为多个单词 ,防止与HTML标签重复</li>
+<li>data为一个函数,作用让每个实例生成一个独立的对象(生成的对象引用地址不同)</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HTML/CSS的一些知识点-02</title>
+    <url>/2018/05/24/58b/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>一些关于 HTML 的基础知识点系列02,主要是边距问题, </p>
+          </div>
+
+<span id="more"></span>
+
+<h2 id="HTML的一些知识点-02"><a href="#HTML的一些知识点-02" class="headerlink" title="HTML的一些知识点-02"></a>HTML的一些知识点-02</h2><h3 id="垂直外边距折叠"><a href="#垂直外边距折叠" class="headerlink" title="垂直外边距折叠"></a>垂直外边距折叠</h3><p>外边距重叠时常见的问题,一般有三种,①相邻元素②父元素与其第一个或者最后一个子元素之间③空的块级元素,常见的</p>
+<ol>
+<li>相邻元素外边距折叠,垂直外边距折叠,取外边距值较大值</li>
+<li>第二种情况,可以通过<strong>给父元素设置边框,内边距,恒内内容,创建BFC</strong>解决这种情况下的外边距折叠问题</li>
+<li>第三种空元素,不是很懂</li>
+<li>如果所有参与折叠的外边距都为负，折叠后的外边距的值为最小的负边距的值。这一规则适用于相邻元素和嵌套元素。</li>
+<li><strong>示例</strong></li>
+</ol>
+<iframe height="300" style="width: 100%;" scrolling="no" title="外边距折叠" src="//codepen.io/wuzhidexiaoming/embed/NWKLdQP/?height=300&theme-id=37768&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+    See the Pen <a href='https://codepen.io/wuzhidexiaoming/pen/NWKLdQP/'>外边距折叠</a> by wuzhidexiaoming
+    (<a href='https://codepen.io/wuzhidexiaoming'>@wuzhidexiaoming</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+
+
+
+<h3 id="行内元素的边距"><a href="#行内元素的边距" class="headerlink" title="行内元素的边距"></a>行内元素的边距</h3><ol>
+<li>内边距,行内元素的内边距,上下左右都会显示效果,但是上下内边距只显示效果不占布局</li>
+<li>外边距,行内元素的外边距只有左右外边距显示效果并起作用</li>
+<li><strong>示例</strong></li>
+</ol>
+<iframe height="265" style="width: 100%;" scrolling="no" title="行内元素的编剧问题" src="//codepen.io/wuzhidexiaoming/embed/wvwEJza/?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+     See the Pen <a href='https://codepen.io/wuzhidexiaoming/pen/wvwEJza/'>行内元素的编剧问题</a> by wuzhidexiaoming
+     (<a href='https://codepen.io/wuzhidexiaoming'>@wuzhidexiaoming</a>) on <a href='https://codepen.io'>CodePen</a>.
+   </iframe>
+
+<h3 id="散乱知识点"><a href="#散乱知识点" class="headerlink" title="散乱知识点"></a>散乱知识点</h3><ol>
+<li>a标签不继承文本样式</li>
+<li>浮动元素之后,后面的行内元素会围绕上面浮动的元素</li>
+<li>相对定位,如果相对于”html”的话,则需要给body和html指定高度,否则垂直方向的定位无效.<a href="%5Bhttps://github.com/wuzhidexiaoming/bufanxueyuan/blob/master/WeekOne/Day4/work/00-%E5%B0%8F%E7%B1%B3banner%E6%A8%A1%E4%BB%BF.html%5D(https://github.com/wuzhidexiaoming/bufanxueyuan/blob/master/WeekOne/Day4/work/00-%E5%B0%8F%E7%B1%B3banner%E6%A8%A1%E4%BB%BF.html)">参考demo</a></li>
+<li>标准和模型的宽度和高度(不加上margin的高度和宽度)</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>基础知识</category>
+      </categories>
+      <tags>
+        <tag>HTML/CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HTML/CSS的一些知识点</title>
+    <url>/2018/05/17/d479/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>一些关于 HTML 的基础知识点 </p>
+          </div>
+
+<span id="more"></span>
+
+<h3 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h3><h4 id="html-开头声明"><a href="#html-开头声明" class="headerlink" title="html 开头声明"></a>html 开头声明</h4><p>开头用<code>&lt;!DOCTYPE HTML&gt;</code><strong>声明</strong>的文件,意思是让浏览器按照 HTML5 标准进行渲染.注意它不是 HTML 标签</p>
+<h4 id="常见标签"><a href="#常见标签" class="headerlink" title="常见标签"></a>常见标签</h4><p>每一个元素都有默认的 display 属性</p>
+<ul>
+<li>常见的<strong>内联</strong>元素<br><code>&lt;a&gt;&lt;/a&gt;</code> <code>&lt;b&gt;&lt;/b&gt;</code> <code>&lt;span&gt;&lt;/span&gt;</code> <code>&lt;img&gt;&lt;/img&gt;</code> <code>&lt;input&gt;</code> <code>&lt;select&gt;&lt;/select&gt;</code> <code>&lt;strong&gt;&lt;/strong&gt;</code>等</li>
+<li>常见的<strong>块级</strong>元素:<br><code>&lt;div&gt;&lt;/div&gt;</code> <code>&lt;ul&gt;&lt;/ul&gt;</code> <code>&lt;ol&gt;&lt;/ol&gt;</code> <code>&lt;p&gt;&lt;/p&gt;</code> <code>&lt;dl&gt;&lt;/dl&gt;</code> <code>&lt;dt&gt;&lt;/dt&gt;</code> <code>&lt;dd&gt;&lt;/dd&gt;</code> <code>&lt;h1&gt;&lt;/h1&gt;</code>等</li>
+<li>常见的<strong>自闭和</strong>元素<br><code>&lt;br&gt;</code> <code>&lt;hr&gt;</code> <code>&lt;img&gt;</code> <code>&lt;input&gt;</code> <code>&lt;link&gt;</code> <code>&lt;meta&gt;</code>等</li>
+<li>i 与 em 和 b 与 strong 的区别<ul>
+<li>i 和 b 不带语义,属于自然样式标签,累死的还有 u, s, pre</li>
+<li>em 和 strong 属于语义样式标签,类似的还有 ins, del, cde</li>
+</ul>
+</li>
+</ul>
+<h4 id="常见的浏览器内核"><a href="#常见的浏览器内核" class="headerlink" title="常见的浏览器内核"></a>常见的浏览器内核</h4><ol>
+<li>Trident (万恶的 IE 等)</li>
+<li>Geoko (火狐等)</li>
+<li>Presto (Opera,不过现在变成 Blink 了等)<br>4.Webkit (Safari,Chrome 等)<br>如果有兴趣的同学可以参考<a href="https://blog.csdn.net/yuyanjing123456789/article/details/78689595">五大主流浏览器及四大内核</a></li>
+</ol>
+<h4 id="HTML5-语义化"><a href="#HTML5-语义化" class="headerlink" title="HTML5 语义化"></a>HTML5 语义化</h4><p>现在 HTML 都是要求语义化了,什么是语义化呢?就是用正确的标签做正确的事,标签分配到位,各负各的责任。语义化让页面内容结构化，结构更清晰，还便于浏览器 、搜索引擎解析，利于 SEO。便于阅读维护。<a href="https://segmentfault.com/a/1190000005626375">详情可以参考</a></p>
+<h4 id="奇思妙想"><a href="#奇思妙想" class="headerlink" title="奇思妙想"></a>奇思妙想</h4><ul>
+<li>画出一条 1px 线，在不使用 border 的的情况下<br><code>&lt;div style=&quot;height:1px;overflow:hidden;background:red&quot;&gt;&lt;/div&gt;</code></li>
+</ul>
+<p>暂时写这么多,想起了再写.待更</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>基础知识</category>
+      </categories>
+      <tags>
+        <tag>HTML/CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实现渐变圆角边框</title>
+    <url>/2020/03/07/df79/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>实现渐变形式的边框</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="实现渐变形式的边框"><a href="#实现渐变形式的边框" class="headerlink" title="实现渐变形式的边框"></a>实现渐变形式的边框</h1><h2 id="代码展示"><a href="#代码展示" class="headerlink" title="代码展示"></a>代码展示</h2><p>HTML结构</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;wrap&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;&quot;</span><span class="attr">content</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>CSS样式</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.wrap</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">1px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">12px</span>;</span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(<span class="number">139deg</span>, <span class="number">#f26084</span>, <span class="number">#f19f64</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.content</span>&#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">12px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#33363d</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下</p>
+<p><img data-src="https://cdn.llow22.com/picture/Snipaste_2020-03-07_17-42-13.png" alt="渐变色边框"></p>
+<h2 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h2><ul>
+<li>给目标元素一个父容器,其父容器设置<code>box-sizing:border-box</code> 和 <code>padding</code> 值(即目标元素的边框宽度)</li>
+<li>给父容器添加<code>bakground-image:linear-gradient(139deg, #f26084, #f19f64);</code>(想要设置边框的渐变色)。</li>
+<li>给目标元素设置<code>width:100%;height:100%;background-color:#000000</code> 就可实现渐变色形式的圆角边框</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HTML和CSS的一些知识点03</title>
+    <url>/2018/06/20/f8a9/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>CSS常用的选择器、浮动</p>
+          </div>
+
+<span id="more"></span>
+
+<h3 id="CSS选择器"><a href="#CSS选择器" class="headerlink" title="CSS选择器"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Selectors">CSS选择器</a></h3><h4 id="基本选择器"><a href="#基本选择器" class="headerlink" title="基本选择器"></a>基本选择器</h4><ol>
+<li>元素选择器。<code>p&#123;color:red;&#125;</code>,所有p标签里面的文字都为红色</li>
+<li>class，类选择器。<code>.classname&#123;width:100px;&#125;</code>，所有类名为”classname”的元素，宽度设置为100px.(一个元素可以有很多类名，每个类名用空格隔开<code>class=&quot;oneClassName twoClassName&quot;</code>)</li>
+<li>id选择器，<strong>一个页面中每个id都是唯一的</strong>，<code>#idName&#123;width:100px&#125;</code>，所有id名为”idName”的元素，宽度设置为100px</li>
+<li>通配符选择器，<code>*&#123;padding:0&#125;</code>,就是页面中所有元素都被选中</li>
+<li><strong>属性选择器</strong><ol>
+<li><code>div[attr]</code> 所有带有<code>attr</code>属性的元素</li>
+<li><code>div[attr=&quot;word&quot;]</code> 所有带有<code>atrr</code>属性并且其值为<code>attr=&quot;word</code>的元素</li>
+<li><code>div[attr*=&quot;w&quot;]</code> 所有带有<code>attr</code>属性并且其值包含<code>w</code>的元素</li>
+<li><code>div[attr^=&quot;w&quot;]</code> 所有带有<code>attr</code>属性并且其值以<code>w</code>开头的的元素</li>
+<li><code>div[attr$=&quot;d&quot;]</code>所有带有<code>attr</code>属性并且其值以<code>d</code>结尾的的元素</li>
+</ol>
+</li>
+</ol>
+<h4 id="组合选择器"><a href="#组合选择器" class="headerlink" title="组合选择器"></a>组合选择器</h4><ol>
+<li>子选择器，<code>ul&gt;li</code>，选中所有直接嵌套在ul内的li元素(<strong>子元素</strong>)。</li>
+<li>后代选择器，<code>ul li</code>，选中所有嵌套在ul内的li元素(<strong>后代元素</strong>)</li>
+</ol>
+<h4 id="伪类"><a href="#伪类" class="headerlink" title="伪类"></a>伪类</h4><ol>
+<li><code>:hover</code>等。待补充…</li>
+</ol>
+<h4 id="伪元素"><a href="#伪元素" class="headerlink" title="伪元素"></a>伪元素</h4><ol>
+<li><code>::first-line</code>等。待补充…</li>
+</ol>
+<h3 id="浮动"><a href="#浮动" class="headerlink" title="浮动"></a>浮动</h3><h4 id="浮动的介绍"><a href="#浮动的介绍" class="headerlink" title="浮动的介绍"></a>浮动的介绍</h4><ol>
+<li>脱离文档流，不占据布局空间</li>
+<li>浮动元素会浮动到父元素的边框或者其他浮动元素（超不过内边距），如果浮动元素上面是一个没有浮动的块元素，则浮动元素不会超过块元素，浮动的元素不会超过它上边的兄弟元素</li>
+<li>如果一行内容不下所有的浮动元素，则会自动换行</li>
+</ol>
+<h4 id="浮动带来的效果"><a href="#浮动带来的效果" class="headerlink" title="浮动带来的效果"></a>浮动带来的效果</h4><ol>
+<li>使行内元素变成块级元素</li>
+<li>左浮动，右自适应。左边元素设置左浮动，右边元素设置overflow:hidden属性，即可实现行内元素右自适应</li>
+<li>如果浮动之前的宽度为默认继承父元素的100%，则浮动之后，宽度由内容撑开</li>
+</ol>
+<h4 id="浮动带来的副作用"><a href="#浮动带来的副作用" class="headerlink" title="浮动带来的副作用"></a>浮动带来的副作用</h4><ol>
+<li>高度坍塌，<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"> .clearfix:after,</span><br><span class="line"> .clearfix:before &#123;</span><br><span class="line">   	content: &#x27;&#x27;;</span><br><span class="line">   	display: table;</span><br><span class="line">   	clear: both;</span><br><span class="line">  &#125;      </span><br><span class="line">/*上面的样式可以很少副作用的解决浮动带来的高达坍塌影响以及父子元素外边距折叠等*/   </span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h3 id="补充：BFC"><a href="#补充：BFC" class="headerlink" title="补充：BFC"></a>补充：BFC</h3><h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><ol>
+<li>隐藏的属性，可以设置打开或者关闭（默认是关闭的）。</li>
+<li>父元素的外边距不会和子元素重叠。</li>
+<li>开启BFC的元素不会被浮动覆盖</li>
+<li>开启BFC的元素可以包含浮动的元素。（可以解决浮动打来的高度塌陷问题）</li>
+</ol>
+<h4 id="如何开启BFC"><a href="#如何开启BFC" class="headerlink" title="如何开启BFC"></a>如何开启BFC</h4><ol>
+<li>position属性值为absolute,fixed</li>
+<li>float属性值不为none</li>
+<li>display属性值为inline-block,flex,inline-flex,table-cell,table-caption</li>
+<li><strong>将元素的overflow设置为一个非visible值</strong>。<em>推荐使用hidden</em></li>
+<li>IE6,设置元素属性zoom:1;(zoom实现放大的效果)</li>
+</ol>
+<h3 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h3><ol>
+<li>rgb</li>
+<li>rgba.<strong>可以设置颜色值的透明度，相较opacity，它们不具有继承性，即不会影响子元素的透明度。</strong></li>
+<li>hsla</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>基础知识</category>
+      </categories>
+      <tags>
+        <tag>HTML/CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>v-if与v-show的区别</title>
+    <url>/2020/04/20/f683/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>v-if 与 v-show 的区别？display:none;与 visibility: hidden;的区别？</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="v-if-与-v-show-的"><a href="#v-if-与-v-show-的" class="headerlink" title="v-if 与 v-show 的"></a>v-if 与 v-show 的</h1><ul>
+<li><p>前者是根据条件渲染，后者是根据条件设置 display 属性。意味着，前者根据条件决定带有 v-if 的元素是否出现 Dom Tree 中，而后者则是根据条件决定带有 v-show 的元素是否出现在 Render Tree 中</p>
+</li>
+<li><p>Render Tree 是由 Dom Tree 和 CSSOM 合成的。</p>
+</li>
+<li><p>Dom Tree 是解析 HTML 生成的。</p>
+</li>
+<li><p>CSSOM 是解析 css 构建生成的<br><img data-src="https://cdn.llow22.com/picture/render-tree-construction.png" alt="Render tree"></p>
+</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>Performance</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue中extend的用法</title>
+    <url>/2020/04/18/3068/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>“Vue.extend() 是一个类继承方法。它用来创建一个 Vue 的子类并返回其构造函数。”</p>
+          </div>
+
+<span id="more"></span>
+
+<h1 id="Vue-extend-用法"><a href="#Vue-extend-用法" class="headerlink" title="Vue.extend()用法"></a>Vue.extend()用法</h1><ul>
+<li>使用Vue.component()会调用Vue.extend()方法，将options作为参数传到Vue.extend()中。<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">  Vue.extend=<span class="function"><span class="keyword">function</span>(<span class="params">extendOptions</span>)</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">var</span> name = extendOptions.name || Super.options.name;</span><br><span class="line">    ...</span><br><span class="line">    Sub.options = mergeOptions(</span><br><span class="line">      Super.options,</span><br><span class="line">      extendOptions</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 调试代码，没看懂。。。回头再看。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="用Vue-extend-做一个loading-“插件”"><a href="#用Vue-extend-做一个loading-“插件”" class="headerlink" title="用Vue.extend()做一个loading “插件”"></a>用Vue.extend()做一个loading “插件”</h2><ul>
+<li><p>实现 <code>this._loading()</code> 出现加载页面</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.js文件</span></span><br><span class="line"><span class="comment">// 首先导入一个基础组件  loading就代表了一个组件，是一个对象，其中包含组件中设置的选项</span></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> loading <span class="keyword">from</span> <span class="string">&#x27;./main.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过Vue.extend()创建基于loading的类</span></span><br><span class="line"><span class="keyword">const</span> <span class="title">constructorLoading</span> = <span class="title">Vue</span>.<span class="title">extend</span>(<span class="params">loading</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_loading_</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> div = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">  div.setAttribute(<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;tempid&#x27;</span>)</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild(div)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  创建loading实例（vueComponent实例额），传入options，会覆盖基础组件的options</span></span><br><span class="line">  <span class="comment">// 创建的实例通过$mount挂载到上面新建的&lt;div id=&#x27;tempid&#x27;&gt;&lt;/div&gt;上。就是基础组件加上新传入的options，这个挂载会覆盖&lt;div id=&#x27;tempid&#x27;&gt;&lt;/div&gt;</span></span><br><span class="line">  <span class="keyword">new</span> <span class="title">constructorLoading</span>(<span class="params">&#123;</span></span><br><span class="line"><span class="params">    props:&#123;</span></span><br><span class="line"><span class="params">      message:&#123;</span></span><br><span class="line"><span class="params">        type:<span class="built_in">String</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">default</span>:msg</span></span><br><span class="line"><span class="params">      &#125;</span></span><br><span class="line"><span class="params">    &#125;</span></span><br><span class="line"><span class="params">  &#125;</span>).<span class="title">$mount</span>(<span class="params"><span class="string">&#x27;#tempid&#x27;</span></span>)</span><br><span class="line"></span><br><span class="line">  // <span class="title">return</span> 一个关闭方法 达成闭环</span><br><span class="line">  <span class="title">return</span> (<span class="params"></span>)=&gt;&#123;</span><br><span class="line">    <span class="comment">// 这个id是基础组件中预设好的</span></span><br><span class="line">    <span class="keyword">let</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;#loading&#x27;</span>);</span><br><span class="line">    ele &amp;&amp; ele.ParentNode.removeChild(ele)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> _loading</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// main.vue文件</span><br><span class="line"><span class="tag">&lt;<span class="name">comment</span>&gt;</span></span><br><span class="line">  # 基础vue实例</span><br><span class="line"><span class="tag">&lt;/<span class="name">comment</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--  此处模板会覆盖所挂载的el,预设好的loading--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;loading&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; message &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">  name: <span class="string">&quot;loading-instance&quot;</span>,</span></span><br><span class="line"><span class="javascript">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">return</span> &#123;&#125;;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    message: &#123;</span><br><span class="line"><span class="javascript">      type: <span class="built_in">String</span>,</span></span><br><span class="line"><span class="javascript">      <span class="function"><span class="title">default</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">return</span> <span class="string">&quot;加载中...&quot;</span>;</span></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span> <span class="attr">scoped</span>&gt;</span></span><br><span class="line">#loading &#123;</span><br><span class="line"><span class="css">  <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="css">  <span class="attribute">height</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="css">  <span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="css">  <span class="attribute">top</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="css">  <span class="attribute">left</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="css">  <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="css">  <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="css">  <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="css">  <span class="attribute">color</span>: white;</span></span><br><span class="line"><span class="css">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.7</span>);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>想要通过Vue.use()的方式使用插件,需要给插件添加一个<code>install</code>方法。</p>
+</li>
+<li><p>后面再补充Vue.use()，顺便做一个真正的插件。</p>
+</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue生命周期</title>
+    <url>/2020/04/07/54f6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>笔记-vue 生命周期，创建一个 vue 实例发生了什么？各个阶段做了那些？父子组件的生命周期执行顺序</p>
+          </div>
+
+<span id="more"></span>
+
+<h2 id="生命周期图"><a href="#生命周期图" class="headerlink" title="生命周期图"></a>生命周期图</h2><p><img data-src="https://cn.vuejs.org/images/lifecycle.png" alt="vue生命周期"></p>
+<h2 id="vue-生命周期"><a href="#vue-生命周期" class="headerlink" title="vue 生命周期"></a>vue 生命周期</h2><h3 id="挂载"><a href="#挂载" class="headerlink" title="挂载"></a>挂载</h3><ol>
+<li>new Vue 实例</li>
+<li>初始化 event&amp;&amp;lifecycle</li>
+<li>beforeCreate</li>
+<li>注入数据，校验</li>
+<li>created</li>
+<li>是否指定 el 选项<ol>
+<li>是，是否指定 template 选项<ol>
+<li>是，开始编译生成 render 函数</li>
+<li>否，将 el 外部的 html 作为模板编译，<ol>
+<li>存在于 new Vue()的情况。Vue.componetn()没有 template 是不行的。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>否，等待 vm.$mount()手动挂载</li>
+</ol>
+</li>
+<li>beforeMount</li>
+<li>创建 vm.$el,替换掉 el</li>
+<li>mounted。挂载完毕</li>
+</ol>
+<h3 id="更新阶段"><a href="#更新阶段" class="headerlink" title="更新阶段"></a>更新阶段</h3><ol>
+<li>更新阶段，data 修改</li>
+<li>beforeUpdate</li>
+<li>重新执行 render 函数，new Vnode，新的虚拟 dom，并应用更新（diff）。(多个数据改变为一次循环).</li>
+<li>updated。更新完毕</li>
+</ol>
+<h3 id="销毁阶段"><a href="#销毁阶段" class="headerlink" title="销毁阶段"></a>销毁阶段</h3><ol>
+<li>下面就是销毁阶段，beforeDestroy</li>
+<li>解除绑定，销毁子组件(又走了一边周期)以及事件监听器</li>
+<li>destroyed.销毁完毕</li>
+</ol>
+<h2 id="父子组件的生命周期函数执行顺序"><a href="#父子组件的生命周期函数执行顺序" class="headerlink" title="父子组件的生命周期函数执行顺序"></a>父子组件的生命周期函数执行顺序</h2><ul>
+<li>有父组件 A 和子组件 B，生命周期执行顺序为 <code>beforeCreate--&gt;created--&gt;beforeMount--&gt;mounted--&gt;beforeUpdate--&gt;updated--&gt;beforeDestroy--&gt;destroyed</code></li>
+<li>除 beforeCreate/created 外，都是父组件先执行 beforeXXX 钩子函数，然后子组件执行整个阶段（挂载、更新、销毁）的钩子函数，执行完阶段最后一个钩子函数之后再执行父组件阶段内的最后一个钩子函数。</li>
+</ul>
+<h2 id="散乱知识点"><a href="#散乱知识点" class="headerlink" title="散乱知识点"></a>散乱知识点</h2><ul>
+<li><code>initState(vm)</code>是在 <code>callHook(vm, &#39;beforeCreate&#39;)</code>之后 <code>callHook(vm, &#39;created&#39;)</code>之前，所以在 <code>beforeCreate</code>生命周期函数中，无法使用 <code>props</code>、 <code>methods</code>、<code>data</code>、<code>computed</code>、<code>watch</code><br><img data-src="https://cdn.llow22.com/picture/Snipaste_2020-03-24_20-42-42.png" alt="vue初始化实例源码"></li>
+<li>mounted阶段才可以获取<code>this.$refs</code>，可以在这一阶段获取数据。</li>
+<li>可以beforeCreate弄个loading，然后在created结束</li>
+<li>beforeDestroy,销毁定时器等。或者来个弹窗-确认xx吗？<h2 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h2></li>
+</ul>
+<ol>
+<li>如果一直不 vm.$mount(),下面怎么进行<ol>
+<li>没有 el 的情况就相当于 vue.componetn(),是由 vue 自动执行 vm.$mount()的。</li>
+</ol>
+</li>
+<li>vm.$el 替换 el，后面的 el 是指什么东西？</li>
+<li>销毁阶段，解除绑定是 el 选项么。还有默认的事件监听器包含了什么？</li>
+<li>“将 el 外部的 html 作为 template 编译”什么意思？<ol>
+<li>就是将 el 节点中的 html 作为 template 编译</li>
+<li>优先 teplate 选项，template 选项编译结果会覆盖掉所挂载的节点上的内容。</li>
+</ol>
+</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue项目解决跨域</title>
+    <url>/2020/05/08/f97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><div class="note info">
+            <p>为什么会产生跨域问题？常见解决方法？最好的解决方法？</p>
+          </div>
+
+<span id="more"></span>
+
+<h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><h3 id="什么是同源？"><a href="#什么是同源？" class="headerlink" title="什么是同源？"></a>什么是同源？</h3><ul>
+<li><p>如果两个 URL 的 protocol、port (如果有指定的话)和 host 都相同的话，则这两个 URL 是同源。 <a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">MDN文档</a></p>
+<ul>
+<li>协议相同  http https</li>
+<li>域名相同</li>
+<li>端口相同   <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">https://www.xhxm.xyz/  		源地址</span><br><span class="line">https://xhxm.xyz/      		非同源	域名不同</span><br><span class="line">http://www.xhxm.xyz/	  	非同源	协议不同</span><br><span class="line">https://www.xhxm.xyz:8181/	非同源 端口不同</span><br><span class="line">https://xhxm.xyz/about/		同源	</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>websocket不受同源策略限制。</strong></p>
+</li>
+</ul>
+<h2 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h2><ul>
+<li>如果非同源访问，就产生了常见的跨域问题！跨域是因为浏览器的行为产生的。当浏览器检测到不符合同源策略的行为就会针对行为作出一些对应的举动</li>
+<li>跨域限制<ul>
+<li>LocalStorage(本地缓存)    禁止读取 </li>
+<li>Dom 获取不到dom</li>
+<li>XMLHttpRequest请求   就算返回了数据，也不能使用</li>
+</ul>
+</li>
+<li>cookie     <ul>
+<li>前端的话通过设置相同的<code>document.domain</code>,可以共享cookie。</li>
+<li>后端可以通过<code>domain=xxx</code>属性设置cookie。(xxx为一级域名)，这样的话，xxx下的的二/三级域名都可以访问到这个cookie了。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何解决ajax产生的跨域问题"><a href="#如何解决ajax产生的跨域问题" class="headerlink" title="如何解决ajax产生的跨域问题"></a>如何解决<code>ajax</code>产生的跨域问题</h2><ul>
+<li>jsonp、<strong>CORS</strong>、<strong>代理</strong></li>
+</ul>
+<h3 id="通过代理解决跨域"><a href="#通过代理解决跨域" class="headerlink" title="通过代理解决跨域"></a>通过代理解决跨域</h3><p>​        先来看看通过代理怎么解决跨域问题的。代理：前端请求还是用前端的域名，但是通过代理服务器帮助把请求转到真正的后端域名上。</p>
+<h4 id="webpack-devServer-proxy"><a href="#webpack-devServer-proxy" class="headerlink" title="webpack-devServer.proxy"></a>webpack-devServer.proxy</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 这是vue项目的vue.config.js配置。。。本文前端可以通过这个配置解决跨域问题</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    proxy: &#123;</span><br><span class="line">      <span class="string">&#x27;/api&#x27;</span>: &#123;</span><br><span class="line">        target: <span class="string">&#x27;http://localhost:5252/&#x27;</span>,</span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        <span class="comment">// 下面这个表示 虽然前端请求中包含了api，但是通过代理发送到服务端的url地址上是不包含api的</span></span><br><span class="line">        <span class="comment">// 前端请求地址都是http://localhost:8080/api/upload，然后经过代理转到http://localhost:5252/，并且忽略api的传递。</span></span><br><span class="line">        pathRewrite: &#123;<span class="string">&#x27;^/api&#x27;</span> : <span class="string">&#x27;&#x27;</span>&#125;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 表示现在 捕获所有前端&#x27;/api&#x27;请求都会通过代理转到了https://xhxm.xyz:5252上（接口地址）</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.llow22.com/picture/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20200508092106.png" alt="picture-show"></p>
+<h4 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h4><ul>
+<li>待补充</li>
+<li>解决开发机的跨域问题</li>
+</ul>
+<h3 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h3><ul>
+<li>待补充。最好是后端做CORS。</li>
+<li>koa <code>ctx.response.set(&#123;&#39;Access-Control-Allow-Origin&#39;:&#39;*&#39;&#125;)</code></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+</search>
